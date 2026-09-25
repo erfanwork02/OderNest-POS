@@ -43,10 +43,26 @@ const BottomNav = () => {
         <p>More</p>
       </button>
 
-      {/* Dish Button */}
-      <button className="absolute bottom-3 right-3 bg-[#F6B100] text-[#f5f5f5] rounded-full p-3 flex items-center justify-center">
-        <BiSolidDish size={30} />
-      </button>
+    {/* Dish Button */}
+<button
+  className="
+    absolute
+    left-1/2
+    -translate-x-1/2
+    bottom-6
+    bg-[#F6B100]
+    text-white
+    rounded-full
+    p-4
+    flex
+    items-center
+    justify-center
+    shadow-lg
+    z-10
+  "
+>
+  <BiSolidDish size={30} />
+</button>
 
     </div>
   );
