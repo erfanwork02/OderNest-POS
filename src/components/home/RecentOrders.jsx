@@ -1,39 +1,96 @@
-import React from 'react'
-import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import OrderList from "./OrderList";
+
 const RecentOrders = () => {
+  const [search, setSearch] = useState("");
+
   return (
-    <div className="px-8 mt-6">
-      <div className="bg-[#fdf5e6] w-full h-[450px] rounded-lg">
-        <div className="flex justify-between items-center px-6 py-4"> 
-            <h1 className='text-[f5f5f5] text-lg font-semibold tracking-wide'>
-                Recent Orders</h1>
-            <a herf="" className="text-[#025cca] text-sm font-semibold">View all</a>
+    <div className="w-full">
+
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h1 className="text-white text-xl font-bold">
+            Recent Orders
+          </h1>
+
+          <p className="text-[#777] text-sm mt-1">
+            Track and manage the latest orders
+          </p>
         </div>
 
-        <div className="flex items-center gap-4 bg-[#1f1f1f] rounded-[15px] px-6 py-1 mx-5">
-        <FaSearch className="text-[#f5f5f5]" />
+        <button className="text-[#fb6100] text-sm font-semibold hover:text-[#ff7b2c] transition">
+          View All
+        </button>
+      </div>
+
+      {/* SEARCH BAR */}
+      <div
+        className="
+          flex
+          items-center
+          gap-3
+          bg-[#252525]
+          border
+          border-[#343434]
+          rounded-xl
+          px-4
+          py-3
+          mb-4
+          focus-within:border-[#fb6100]
+          transition
+        "
+      >
+        <FaSearch className="text-[#777]" />
 
         <input
           type="text"
-          placeholder="Search recent Orders"
-          className="bg-[#1f1f1f] outline-none text-[#f5f5f5] w-full"
+          placeholder="Search recent orders..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="
+            bg-transparent
+            outline-none
+            text-white
+            placeholder-[#777]
+            w-full
+            text-sm
+          "
         />
-        </div>
-
-        {/* Order list */}
-        <div className="mt-4 px-6 overflow-y-scroll h-[300px] scrollbar">
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        </div>
-
       </div>
-    </div>
-  )
-}
 
-export default RecentOrders
+      {/* ORDER LIST */}
+      <div
+        className="
+          bg-[#1f1f1f]
+          border
+          border-[#303030]
+          rounded-2xl
+          p-4
+          max-h-[698px]
+          overflow-y-auto
+          scrollbar-hide
+          
+        "
+      >
+        <div className="flex flex-col gap-3 ">
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+          <OrderList />
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+export default RecentOrders;

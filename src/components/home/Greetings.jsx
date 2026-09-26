@@ -26,7 +26,7 @@ const Greetings = () => {
         <div>
             <h1 className="text-[#f5f5f5] text-2xl font-semibold tracking-wide">
                 Good Morning, Mahedi</h1>
-            <p className="text-[#ababab] text-sm">Give your best services for Cusstomers 😊
+            <p className="text-[#ababab] text-sm">Give the customers your best service with a smile 😊
             </p>
         </div>
         <div>

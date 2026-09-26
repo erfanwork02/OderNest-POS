@@ -1,48 +1,122 @@
-import React from 'react'
-import { popularDishes } from "../../constants"
+import React from "react";
+import { popularDishes } from "../../constants";
 
 const PopularDishes = () => {
   return (
-    <div className="w-full px-3">
-      <div className="bg-[#bc8f8f] w-full rounded-lg">
-            <div className="flex justify-between items-center px-6 py-1"> 
-                <h1 className='text-[#000000] text-lg font-semibold tracking-wide'>
-                    Popular Dishes</h1>
+    <div className="w-full">
 
-                <a 
-                herf="" 
-                className="text-[#025cca] text-sm font-semibold"
-                >View all
-                </a>
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h1 className="text-white text-xl font-bold">
+            Popular Dishes
+          </h1>
+
+          <p className="text-[#777] text-sm mt-1">
+            Best selling items today
+          </p>
+        </div>
+
+        <button className="text-[#fb6100] text-sm font-semibold hover:text-[#ff7b2c] transition">
+          View All
+        </button>
+      </div>
+
+      {/* DISH LIST */}
+      <div className="flex flex-col gap-3 max-h-[520px] overflow-y-auto scrollbar-hide pr-1">
+
+        {popularDishes.map((dish, index) => (
+          <div
+            key={dish.id}
+            className="
+              flex
+              items-center
+              justify-between
+              bg-[#252525]
+              border
+              border-[#343434]
+              rounded-xl
+              px-4
+              py-3
+              hover:border-[#fb6100]
+              hover:bg-[#2a2a2a]
+              transition-all
+              duration-200
+              cursor-pointer
+            "
+          >
+
+            {/* LEFT SIDE */}
+            <div className="flex items-center gap-4">
+
+              {/* RANK */}
+              <div
+                className={`
+                  w-8
+                  h-8
+                  rounded-lg
+                  flex
+                  items-center
+                  justify-center
+                  text-sm
+                  font-bold
+                  ${
+                    index === 0
+                      ? "bg-[#fb6100] text-white"
+                      : "bg-[#333333] text-[#aaa]"
+                  }
+                `}
+              >
+                {dish.id < 10 ? `0${dish.id}` : dish.id}
+              </div>
+
+              {/* IMAGE */}
+              <img
+                src={dish.image}
+                alt={dish.name}
+                className="
+                  w-[55px]
+                  h-[55px]
+                  rounded-xl
+                  object-cover
+                  border
+                  border-[#3a3a3a]
+                "
+              />
+
+              {/* DISH DETAILS */}
+              <div>
+                <h2 className="text-white font-semibold">
+                  {dish.name}
+                </h2>
+
+                <p className="text-[#777] text-sm mt-1">
+                  Customer favorite
+                </p>
+              </div>
+
             </div>
 
-            <div className="overflow-y-scroll h-[680px] scrollbar-hide">
-                {popularDishes.map((dish) => {
-                    return (
-                    <div
-                    key={dish.id} 
-                    className="flex items-center gap-4 bg-[#fa8072] rounded-[15px] px-6 py-4 mx-4 mt-3 
-                                border border-[#ff6347]"
-                    >
-                        <h1 className="text-[#f5f5f5] font-bold text-xl mr-1">{dish.id < 10 ? `0${dish.id}` : dish.id}</h1>
-                        <img src={dish.image}
-                        alt={dish.name}
-                        className="w-[50px] h-[50px] rounded-full" 
-                        />
+            {/* ORDER COUNT */}
+            <div className="text-right">
 
-                        <div>
-                            <h1 className="text-[#000000] font-semibold tracking-wide"> {dish.name}</h1>
-                            <p className="text-[#f5f5f5] text-s font-bold mt-1">
-                                <span className="text-[#ffff00] text-sm">orders: </span>
-                                {dish.numberOfOrders}</p>
-        </div>
+              <p className="text-[#fb6100] text-lg font-bold">
+                {dish.numberOfOrders}
+              </p>
+
+              <p className="text-[#777] text-xs">
+                orders
+              </p>
+
+            </div>
+
+          </div>
+        ))}
+
+      </div>
+
     </div>
-    );
-})
-}
-</div>
-</div>
-</div>
-);
+  );
 };
+
 export default PopularDishes;
