@@ -11,28 +11,49 @@ import {
 import { CiCircleMore } from "react-icons/ci";
 
 import { BiSolidDish } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const BottomNav = () => {
-
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-[#262626] p-2 h-16 flex justify-around">
 
-      {/* Home Button */}
-      <button onClick={() => navigate("/")}  className="flex items-center justify-center text-[#f5f5f5] bg-[#343434] w-[200px] rounded-[20px]">
+       {/* Home Button */}
+      <button
+        onClick={() => navigate("/")}
+        className={`flex items-center justify-center w-[200px] rounded-[20px] ${
+          pathname === "/"
+            ? "bg-[#343434] text-[#f5f5f5]"
+            : "text-[#ababab]"
+        }`}
+      >
         <FaHome className="inline mr-2" size={20} />
         <p>Home</p>
       </button>
 
       {/* Orders Button */}
-      <button onClick={() => navigate("/orders")} className="flex items-center justify-center text-[#ababab] w-[200px]">
+      <button
+        onClick={() => navigate("/orders")}
+        className={`flex items-center justify-center w-[200px] rounded-[20px] ${
+          pathname === "/orders"
+            ? "bg-[#343434] text-[#f5f5f5]"
+            : "text-[#ababab]"
+        }`}
+      >
         <MdOutlineReorder className="inline mr-2" size={20} />
         <p>Orders</p>
       </button>
 
       {/* Tables Button */}
-      <button onClick={() => navigate("/tables")} className="flex items-center justify-center text-[#ababab] w-[200px]">
+      <button
+        onClick={() => navigate("/tables")}
+        className={`flex items-center justify-center w-[200px] rounded-[20px] ${
+          pathname === "/tables"
+            ? "bg-[#343434] text-[#f5f5f5]"
+            : "text-[#ababab]"
+        }`}
+      >
         <MdTableBar className="inline mr-2" size={20} />
         <p>Tables</p>
       </button>
