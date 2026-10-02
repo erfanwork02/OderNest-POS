@@ -1,4 +1,4 @@
-
+import Menu from "./pages/Menu";
 import {
   BrowserRouter as Router,
   Routes,

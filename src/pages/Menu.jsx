@@ -5,6 +5,7 @@ import { MdRestaurantMenu } from "react-icons/md";
 import MenuContainer from "../components/menu/MenuContainer";
 import CustomerInfo from "../components/menu/CustomerInfo";
 import CartInfo from "../components/menu/CartInfo";
+import Bill from "../components/menu/Bill";
 
 const Menu = () => {
   return (
