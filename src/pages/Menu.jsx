@@ -1,6 +1,7 @@
 import React from "react";
 import BackButton from "../components/shared/BackButton";
-import { FaUserCircle } from "react-icons/fa";
+import { MdRestaurantMenu } from "react-icons/md";
+import MenuContainer from "../components/menu/MenuContainer";
 
 const Menu = () => {
   return (
@@ -8,8 +9,11 @@ const Menu = () => {
 
       {/* Left Div */}
       <div className="flex-[3]">
+
+        {/* Menu Header */}
         <div className="flex items-center justify-between px-10 py-4">
 
+          {/* Back Button and Title */}
           <div className="flex items-center gap-4">
             <BackButton />
 
@@ -18,20 +22,30 @@ const Menu = () => {
             </h1>
           </div>
 
+          {/* Customer Information */}
           <div className="flex items-center justify-around gap-4">
-  <FaUserCircle className="text-[#f5f5f5] text-4xl" />
+            <div className="flex items-center gap-3 cursor-pointer">
 
-  <div className="flex flex-col items-start">
-    <h1 className="text-md text-[#f5f5f5] font-semibold tracking-wide">
-      Amrit Raj
-    </h1>
-    <p className="text-xs text-[#ababab] font-medium">
-      Admin
-    </p>
-  </div>
-</div>
+              <MdRestaurantMenu className="text-[#f5f5f5] text-4xl" />
+
+              <div className="flex flex-col items-start">
+                <h1 className="text-md text-[#f5f5f5] font-semibold tracking-wide">
+                  Customer Name
+                </h1>
+
+                <p className="text-xs text-[#ababab] font-medium">
+                  Table No: 2
+                </p>
+              </div>
+
+            </div>
+          </div>
 
         </div>
+
+        {/* Menu Content */}
+        <MenuContainer />
+
       </div>
 
       {/* Right Div */}
@@ -44,3 +58,4 @@ const Menu = () => {
 };
 
 export default Menu;
+

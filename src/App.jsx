@@ -22,6 +22,8 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/tables" element={<Tables />} />
+        <Route path = "/menu" element = {<Menu />} />
+        <Route path="*" element ={<div>Not Found </div>}/>
       </Routes>
 
       <BottomNav />
