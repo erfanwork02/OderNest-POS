@@ -1,7 +1,10 @@
 import React from "react";
+import BottomNav from "../components/shared/BottomNav";
 import BackButton from "../components/shared/BackButton";
 import { MdRestaurantMenu } from "react-icons/md";
 import MenuContainer from "../components/menu/MenuContainer";
+import CustomerInfo from "../components/menu/CustomerInfo";
+import CartInfo from "../components/menu/CartInfo";
 
 const Menu = () => {
   return (
@@ -49,7 +52,17 @@ const Menu = () => {
       </div>
 
       {/* Right Div */}
-      <div className="flex-[2] bg-blue-500">
+      <div className="flex-[1] bg-[#1a1a1a] mt-4 mr-3 h-[780px] rounded-lg pt-2">
+        {/* Customer info */}
+        <CustomerInfo />
+        <hr className="border-[#2a2a2a] border-t-2"/>
+        <CartInfo />
+        <hr className="border-[#2a2a2a] border-t-2"/>
+
+        {/* Cart Item */}
+        
+        {/* Bill */}
+        <Bill />
 
       </div>
 
