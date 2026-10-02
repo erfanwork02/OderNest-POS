@@ -1,5 +1,7 @@
 import React from "react";
 import { getRandomBg } from "../../utils";
+import { useNavigate } from "react-router-dom";
+
 
 const TableCard = ({ key, name, status, initials, seats }) => {
 
