@@ -1,6 +1,6 @@
 import React from 'react'
-import { RiDeleteBin2Fullc} from "react-icons/ri"
-import { FanotMeedical } from 'react-icons/fa6'
+import { RiDeleteBin2Fill } from "react-icons/ri";
+import { FaNotesMedical } from "react-icons/fa6";
 
 const CartInfo = () => {
   return (

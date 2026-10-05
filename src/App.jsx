@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Orders from "./pages/Orders";
 import Tables from "./pages/Tables";
+import Menu from "./pages/Menu";
 import Header from "./components/shared/Header";
 import BottomNav from "./components/shared/BottomNav";
 
