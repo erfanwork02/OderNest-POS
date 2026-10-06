@@ -15,9 +15,7 @@ const RecentOrders = () => {
             Recent Orders
           </h1>
 
-          <p className="text-[#777] text-sm mt-1">
-            Track and manage the latest orders
-          </p>
+          
         </div>
 
         <button className="text-[#fb6100] text-sm font-semibold hover:text-[#ff7b2c] transition">

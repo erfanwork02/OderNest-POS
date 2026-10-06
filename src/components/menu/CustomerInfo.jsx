@@ -1,24 +1,64 @@
-import { formatDate, getAvatarName } from "../../utils";
-import { useSelector } from "react-redux";
 import React, { useState } from "react";
-
+import { useSelector } from "react-redux";
+import { formatDate, getAvatarName } from "../../utils";
 
 const CustomerInfo = () => {
   const customerData = useSelector((state) => state.customer);
   const [dateTime] = useState(() => new Date());
+
+  const customerName =
+    customerData.customerName || "Customer Name";
+
   return (
-    <div>
-      <div className="flex item-center justify-between px-4 py-3">
-          <div className="flex flex-col item-start">
-            <h1 className= "text-md text-[#f5f5f5] font-semibold tracking-wide"> {customerData.customerName || "Customer Name"}
-            </h1>
-            <p className="text-xs text-[#ababab] font-medium mt-1">101/Dine</p>
-            <p className="text-xs text-[#ababab] font-medium mt-2">January 19, 2026 05:34 PM
-            </p>
-          </div>
-          <button className="bg-[#f6b100] p-3 text-1 font-bold rounded-lg">CN</button>
+    <div className="px-5 py-4">
+      <div
+        className="
+          flex
+          items-center
+          justify-between
+          bg-[#252525]
+          border
+          border-[#343434]
+          rounded-xl
+          px-2
+          py-1
+        "
+      >
+        {/* CUSTOMER INFO */}
+        <div>
+          <h1 className="text-white text-base font-semibold">
+            {customerName}
+          </h1>
+
+          <p className="text-[#ababab] text-sm mt-1">
+            {customerData.tableNo || "Table 101"} / Dine In
+          </p>
+
+          <p className="text-[#777] text-xs mt-2">
+            {formatDate(dateTime)}
+          </p>
         </div>
+
+        {/* AVATAR */}
+        <div
+          className="
+            w-12
+            h-12
+            flex
+            items-center
+            justify-center
+            bg-[#fb6100]
+            text-white
+            rounded-xl
+            font-bold
+            text-sm
+          "
+        >
+          {getAvatarName(customerName)}
+        </div>
+      </div>
     </div>
-  )
-}
-export default CustomerInfo
+  );
+};
+
+export default CustomerInfo;

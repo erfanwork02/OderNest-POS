@@ -1,565 +1,1456 @@
-import { MdTableBar, MdCategory } from "react-icons/md";
-import { BiSolidDish } from "react-icons/bi";
-
-import butterChicken from "../assets/images/butter-chicken-4.jpg";
-import palakPaneer from "../assets/images/Saag-Paneer-1.jpg";
-import biryani from "../assets/images/hyderabadibiryani.jpg";
-import masalaDosa from "../assets/images/masala-dosa.jpg";
-import choleBhature from "../assets/images/chole-bhature.jpg";
-import rajmaChawal from "../assets/images/rajma-chawal-1.jpg";
-import paneerTikka from "../assets/images/paneer-tika.webp";
-import gulabJamun from "../assets/images/gulab-jamun.webp";
-import pooriSabji from "../assets/images/poori-sabji.webp";
-import roganJosh from "../assets/images/rogan-josh.jpg";
+// ============================================================
+// DEMARCO'S DELI & MARKET MENU
+// ============================================================
 
 
+// ======================
+// BREAKFAST SANDWICHES
+// ======================
 
-export const popularDishes = [
+export const breakfastSandwiches = [
   {
-    id: 1,
-    image: butterChicken,
-    name: "Butter Chicken",
-    numberOfOrders: 250,
+    id: "bs-1",
+    name: "Beef Bacon, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 2,
-    image: palakPaneer,
-    name: "Palak Paneer",
-    numberOfOrders: 190,
+    id: "bs-2",
+    name: "Beef Bacon, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 3,
-    image: biryani,
-    name: "Hyderabadi Biryani",
-    numberOfOrders: 300,
+    id: "bs-3",
+    name: "Turkey Bacon, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 4,
-    image: masalaDosa,
-    name: "Masala Dosa",
-    numberOfOrders: 220,
+    id: "bs-4",
+    name: "Turkey Bacon, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 5,
-    image: choleBhature,
-    name: "Chole Bhature",
-    numberOfOrders: 270,
+    id: "bs-5",
+    name: "Beef Sausage, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 6,
-    image: rajmaChawal,
-    name: "Rajma Chawal",
-    numberOfOrders: 180,
+    id: "bs-6",
+    name: "Beef Sausage, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 7,
-    image: paneerTikka,
-    name: "Paneer Tikka",
-    numberOfOrders: 210,
+    id: "bs-7",
+    name: "Turkey Sausage, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 8,
-    image: gulabJamun,
-    name: "Gulab Jamun",
-    numberOfOrders: 310,
+    id: "bs-8",
+    name: "Turkey Sausage, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 9,
-    image: pooriSabji,
-    name: "Poori Sabji",
-    numberOfOrders: 140,
+    id: "bs-9",
+    name: "Steak, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
   },
   {
-    id: 10,
-    image: roganJosh,
-    name: "Rogan Josh",
-    numberOfOrders: 160,
+    id: "bs-10",
+    name: "Steak, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-11",
+    name: "Beef Bologna, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-12",
+    name: "Beef Bologna, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-13",
+    name: "Beef Salami, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-14",
+    name: "Beef Salami, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-15",
+    name: "Turkey Ham, Egg & Cheese - Sandwich/Wrap",
+    price: 6.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-16",
+    name: "Turkey Ham, Egg & Cheese - Sub",
+    price: 9.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-17",
+    name: "Egg & Cheese - Sandwich/Wrap",
+    price: 5.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-18",
+    name: "Egg & Cheese - Sub",
+    price: 8.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-19",
+    name: "Bagel & Cream Cheese",
+    price: 4.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-20",
+    name: "French Toast Sandwich Meat, Egg & Cheese",
+    price: 7.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-21",
+    name: "Pancake Sandwich Meat, Egg & Cheese",
+    price: 7.99,
+    category: "Breakfast Sandwiches",
+  },
+  {
+    id: "bs-22",
+    name: "Breakfast Burrito",
+    price: 7.99,
+    category: "Breakfast Sandwiches",
   },
 ];
 
 
-export const tables = [
-  { id: 1, name: "Table 1", status: "Booked", initial: "AM", seats: 4 },
-  { id: 2, name: "Table 2", status: "Available", initial: "MB", seats: 6 },
-  { id: 3, name: "Table 3", status: "Booked", initial: "JS", seats: 2 },
-  { id: 4, name: "Table 4", status: "Available", initial: "HR", seats: 4 },
-  { id: 5, name: "Table 5", status: "Booked", initial: "PL", seats: 3 },
-  { id: 6, name: "Table 6", status: "Available", initial: "RT", seats: 4 },
-  { id: 7, name: "Table 7", status: "Booked", initial: "LC", seats: 5 },
-  { id: 8, name: "Table 8", status: "Available", initial: "DP", seats: 5 },
-  { id: 9, name: "Table 9", status: "Booked", initial: "NK", seats: 6 },
-  { id: 10, name: "Table 10", status: "Available", initial: "SB", seats: 6 },
-  { id: 11, name: "Table 11", status: "Booked", initial: "GT", seats: 4 },
-  { id: 12, name: "Table 12", status: "Available", initial: "JS", seats: 6 },
-  { id: 13, name: "Table 13", status: "Booked", initial: "EK", seats: 2 },
-  { id: 14, name: "Table 14", status: "Available", initial: "QN", seats: 6 },
-  { id: 15, name: "Table 15", status: "Booked", initial: "TW", seats: 3 },
-];
+// ======================
+// BREAKFAST PLATTERS
+// ======================
 
-
-export const startersItem = [
+export const breakfastPlatters = [
   {
-    id: 1,
-    name: "Paneer Tikka",
-    price: 250,
-    category: "Vegetarian",
+    id: "bp-1",
+    name: "French Toast",
+    price: 13.99,
+    category: "Breakfast Platters",
+    description: "3 eggs, cheese and choice of meat",
   },
   {
-    id: 2,
-    name: "Chicken Tikka",
-    price: 300,
-    category: "Non-Vegetarian",
+    id: "bp-2",
+    name: "Homefries",
+    price: 13.99,
+    category: "Breakfast Platters",
+    description: "3 eggs, cheese and choice of meat",
   },
   {
-    id: 3,
-    name: "Tandoori Chicken",
-    price: 350,
-    category: "Non-Vegetarian",
+    id: "bp-3",
+    name: "Pancakes",
+    price: 13.99,
+    category: "Breakfast Platters",
+    description:
+      "3 eggs, cheese and choice of meat. Add banana, strawberries or blueberries for +$1.99",
   },
   {
-    id: 4,
-    name: "Samosa",
-    price: 100,
-    category: "Vegetarian",
+    id: "bp-4",
+    name: "Spinach Omelette",
+    price: 15.99,
+    category: "Breakfast Platters",
+    description:
+      "Spinach & cheese, choice of meat. Comes with toast & homefries",
   },
   {
-    id: 5,
-    name: "Aloo Tikki",
-    price: 120,
-    category: "Vegetarian",
+    id: "bp-5",
+    name: "Vegetable Omelette",
+    price: 15.99,
+    category: "Breakfast Platters",
+    description:
+      "Peppers, spinach, tomatoes & onion, choice of meat. Comes with toast & homefries",
   },
   {
-    id: 6,
-    name: "Hara Bhara Kebab",
-    price: 220,
-    category: "Vegetarian",
-  },
-];
-
-
-export const mainCourse = [
-  {
-    id: 1,
-    name: "Butter Chicken",
-    price: 400,
-    category: "Non-Vegetarian",
+    id: "bp-6",
+    name: "Western Omelette",
+    price: 13.99,
+    category: "Breakfast Platters",
+    description:
+      "Turkey, ham, peppers & onion, choice of meat. Comes with toast & homefries",
   },
   {
-    id: 2,
-    name: "Paneer Butter Masala",
-    price: 350,
-    category: "Vegetarian",
+    id: "bp-7",
+    name: "DT Special",
+    price: 15.99,
+    category: "Breakfast Platters",
+    description: "3 eggs, french toast, beef bacon",
   },
   {
-    id: 3,
-    name: "Chicken Biryani",
-    price: 450,
-    category: "Non-Vegetarian",
-  },
-  {
-    id: 4,
-    name: "Dal Makhani",
-    price: 180,
-    category: "Vegetarian",
-  },
-  {
-    id: 5,
-    name: "Kadai Paneer",
-    price: 300,
-    category: "Vegetarian",
-  },
-  {
-    id: 6,
-    name: "Rogan Josh",
-    price: 500,
-    category: "Non-Vegetarian",
+    id: "bp-8",
+    name: "DT Plus Special",
+    price: 15.99,
+    category: "Breakfast Platters",
+    description: "3 eggs, cheese, beef bacon & homefries",
   },
 ];
 
 
-export const beverages = [
+// ======================
+// SIDE ORDERS
+// ======================
+
+export const sideOrders = [
   {
-    id: 1,
-    name: "Masala Chai",
-    price: 50,
-    category: "Hot",
+    id: "so-1",
+    name: "3 XL Eggs w/ Cheese",
+    price: 4.99,
+    category: "Side Orders",
   },
   {
-    id: 2,
-    name: "Lemon Soda",
-    price: 80,
-    category: "Cold",
+    id: "so-2",
+    name: "Short Stack French Toast (3)",
+    price: 5.99,
+    category: "Side Orders",
   },
   {
-    id: 3,
-    name: "Mango Lassi",
-    price: 120,
-    category: "Cold",
+    id: "so-3",
+    name: "Short Stack Pancakes (3)",
+    price: 5.99,
+    category: "Side Orders",
   },
   {
-    id: 4,
-    name: "Cold Coffee",
-    price: 150,
-    category: "Cold",
+    id: "so-4",
+    name: "Choc. Chip Pancakes (3)",
+    price: 7.99,
+    category: "Side Orders",
   },
   {
-    id: 5,
-    name: "Fresh Lime Water",
-    price: 60,
-    category: "Cold",
+    id: "so-5",
+    name: "Strawberry or Blueberry Pancakes (3)",
+    price: 7.99,
+    category: "Side Orders",
   },
   {
-    id: 6,
-    name: "Iced Tea",
-    price: 100,
-    category: "Cold",
+    id: "so-6",
+    name: "Home Fries",
+    price: 4.99,
+    category: "Side Orders",
+  },
+  {
+    id: "so-7",
+    name: "Omelettes",
+    price: 6.99,
+    category: "Side Orders",
+  },
+  {
+    id: "so-8",
+    name: "Grits",
+    price: 3.0,
+    category: "Side Orders",
+  },
+  {
+    id: "so-9",
+    name: "Beef or Turkey Bacon (4 Slices)",
+    price: 4.99,
+    category: "Side Orders",
+  },
+  {
+    id: "so-10",
+    name: "Toast w/ Butter & Jelly",
+    price: 1.99,
+    category: "Side Orders",
   },
 ];
 
 
-export const soups = [
+// ======================
+// CHICKEN TENDERS
+// ======================
+
+export const chickenTenders = [
   {
-    id: 1,
-    name: "Tomato Soup",
-    price: 120,
-    category: "Vegetarian",
+    id: "ct-1",
+    name: "(6) Chicken Tenders",
+    price: 8.99,
+    category: "Chicken Tenders",
   },
   {
-    id: 2,
-    name: "Sweet Corn Soup",
-    price: 130,
-    category: "Vegetarian",
+    id: "ct-2",
+    name: "(6) Chicken Tenders - Fries & Soda",
+    price: 12.99,
+    category: "Chicken Tenders",
   },
   {
-    id: 3,
-    name: "Hot & Sour Soup",
-    price: 140,
-    category: "Vegetarian",
+    id: "ct-3",
+    name: "(6) Sweet Chili Chicken Tenders",
+    price: 8.99,
+    category: "Chicken Tenders",
   },
   {
-    id: 4,
-    name: "Chicken Clear Soup",
-    price: 160,
-    category: "Non-Vegetarian",
+    id: "ct-4",
+    name: "(6) Sweet Chili Chicken Tenders - Fries & Soda",
+    price: 12.99,
+    category: "Chicken Tenders",
   },
   {
-    id: 5,
-    name: "Mushroom Soup",
-    price: 150,
-    category: "Vegetarian",
+    id: "ct-5",
+    name: "(6) Mango Habanero Chicken Tenders",
+    price: 8.99,
+    category: "Chicken Tenders",
   },
   {
-    id: 6,
-    name: "Lemon Coriander Soup",
-    price: 110,
-    category: "Vegetarian",
+    id: "ct-6",
+    name: "(6) Mango Habanero Chicken Tenders - Fries & Soda",
+    price: 12.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-7",
+    name: "(6) Buffalo Chicken Tenders",
+    price: 8.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-8",
+    name: "(6) Buffalo Chicken Tenders - Fries & Soda",
+    price: 12.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-9",
+    name: "(6) Bang Bang Chicken Tenders",
+    price: 8.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-10",
+    name: "(6) Bang Bang Chicken Tenders - Fries & Soda",
+    price: 12.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-11",
+    name: "(6) Garlic Parmesan Chicken Tenders",
+    price: 8.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-12",
+    name: "(6) Garlic Parmesan Chicken Tenders - Fries & Soda",
+    price: 12.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-13",
+    name: "(6) Barbeque Chicken Tenders",
+    price: 8.99,
+    category: "Chicken Tenders",
+  },
+  {
+    id: "ct-14",
+    name: "(6) Barbeque Chicken Tenders - Fries & Soda",
+    price: 12.99,
+    category: "Chicken Tenders",
   },
 ];
 
 
-export const desserts = [
+// ======================
+// WINGS & WING ZINGS
+// ======================
+
+export const wingsWingZings = [
   {
-    id: 1,
-    name: "Gulab Jamun",
-    price: 100,
-    category: "Vegetarian",
+    id: "wz-1",
+    name: "(6) Wing Zings",
+    price: 7.99,
+    category: "Wings & Wing Zings",
   },
   {
-    id: 2,
-    name: "Kulfi",
-    price: 150,
-    category: "Vegetarian",
+    id: "wz-2",
+    name: "(6) Wing Zings - Fries & Soda",
+    price: 11.99,
+    category: "Wings & Wing Zings",
   },
   {
-    id: 3,
-    name: "Chocolate Lava Cake",
-    price: 250,
-    category: "Vegetarian",
+    id: "wz-3",
+    name: "(10) Wing Zings",
+    price: 11.99,
+    category: "Wings & Wing Zings",
   },
   {
-    id: 4,
-    name: "Ras Malai",
-    price: 180,
-    category: "Vegetarian",
+    id: "wz-4",
+    name: "(10) Wing Zings - Fries & Soda",
+    price: 15.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-5",
+    name: "(10) Sweet Chili Chicken Wing Zings",
+    price: 11.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-6",
+    name: "(10) Sweet Chili Chicken Wing Zings - Fries & Soda",
+    price: 15.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-7",
+    name: "(10) Buffalo Chicken Wing Zings",
+    price: 11.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-8",
+    name: "(10) Buffalo Chicken Wing Zings - Fries & Soda",
+    price: 15.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-9",
+    name: "(10) Mango Hab. Chicken Wing Zings",
+    price: 11.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-10",
+    name: "(10) Mango Hab. Chicken Wing Zings - Fries & Soda",
+    price: 15.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-11",
+    name: "(10) Bang Bang Chicken Wing Zings",
+    price: 11.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-12",
+    name: "(10) Bang Bang Chicken Wing Zings - Fries & Soda",
+    price: 15.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-13",
+    name: "(10) Garlic Parm. Chicken Wing Zings",
+    price: 11.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-14",
+    name: "(10) Garlic Parm. Chicken Wing Zings - Fries & Soda",
+    price: 15.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-15",
+    name: "(10) Barbeque Chicken Wing Zings",
+    price: 11.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-16",
+    name: "(10) Barbeque Chicken Wing Zings - Fries & Soda",
+    price: 15.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-17",
+    name: "(4) Whole Chicken Wings",
+    price: 6.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-18",
+    name: "(4) Whole Chicken Wings - Fries & Soda",
+    price: 11.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-19",
+    name: "(6) Whole Chicken Wings",
+    price: 9.99,
+    category: "Wings & Wing Zings",
+  },
+  {
+    id: "wz-20",
+    name: "(6) Whole Chicken Wings - Fries & Soda",
+    price: 13.99,
+    category: "Wings & Wing Zings",
   },
 ];
 
 
-export const pizzas = [
+// ======================
+// QUESADILLAS
+// ======================
+
+export const quesadillas = [
   {
-    id: 1,
-    name: "Margherita Pizza",
-    price: 350,
-    category: "Vegetarian",
+    id: "q-1",
+    name: "Grilled Chicken Quesadilla",
+    price: 9.99,
+    category: "Quesadillas",
   },
   {
-    id: 2,
-    name: "Veg Supreme Pizza",
-    price: 400,
-    category: "Vegetarian",
+    id: "q-2",
+    name: "Grilled Buffalo Chicken Quesadilla",
+    price: 9.99,
+    category: "Quesadillas",
   },
   {
-    id: 3,
-    name: "Pepperoni Pizza",
-    price: 450,
-    category: "Non-Vegetarian",
+    id: "q-3",
+    name: "Grilled Steak Quesadilla",
+    price: 9.99,
+    category: "Quesadillas",
+  },
+  {
+    id: "q-4",
+    name: "Grilled Shrimp Quesadilla",
+    price: 9.99,
+    category: "Quesadillas",
+  },
+  {
+    id: "q-5",
+    name: "Chicken Fajitas",
+    price: 9.99,
+    category: "Quesadillas",
+  },
+  {
+    id: "q-6",
+    name: "Cheeseburger Quesadilla",
+    price: 9.99,
+    category: "Quesadillas",
+    description: "Grilled peppers, onions, tomatoes, and mixed cheese",
   },
 ];
 
 
-export const alcoholicDrinks = [
-  {
-    id: 1,
-    name: "Beer",
-    price: 200,
-    category: "Alcoholic",
-  },
-  {
-    id: 2,
-    name: "Whiskey",
-    price: 500,
-    category: "Alcoholic",
-  },
-  {
-    id: 3,
-    name: "Vodka",
-    price: 450,
-    category: "Alcoholic",
-  },
-  {
-    id: 4,
-    name: "Rum",
-    price: 350,
-    category: "Alcoholic",
-  },
-  {
-    id: 5,
-    name: "Tequila",
-    price: 600,
-    category: "Alcoholic",
-  },
-  {
-    id: 6,
-    name: "Cocktail",
-    price: 400,
-    category: "Alcoholic",
-  },
-];
+// ======================
+// FRESH SALADS
+// ======================
 
-
-export const salads = [
+export const freshSalads = [
   {
-    id: 1,
+    id: "sal-1",
+    name: "Garden Salad",
+    price: 9.99,
+    category: "Fresh Salads",
+    description: "Tomato, onion, cucumbers, peppers, feta cheese, egg",
+  },
+  {
+    id: "sal-2",
     name: "Caesar Salad",
-    price: 200,
-    category: "Vegetarian",
+    price: 9.99,
+    category: "Fresh Salads",
+    description: "Romaine lettuce, parmesan cheese, egg & croutons",
   },
   {
-    id: 2,
-    name: "Greek Salad",
-    price: 250,
-    category: "Vegetarian",
+    id: "sal-3",
+    name: "Chicken Caesar Salad",
+    price: 11.99,
+    category: "Fresh Salads",
+    description:
+      "Grilled chicken, Romaine lettuce, parmesan cheese, egg & croutons",
   },
   {
-    id: 3,
-    name: "Fruit Salad",
-    price: 150,
-    category: "Vegetarian",
+    id: "sal-4",
+    name: "Buffalo Chicken Caesar Salad",
+    price: 11.99,
+    category: "Fresh Salads",
+    description:
+      "Grilled buffalo chicken, Romaine lettuce, parmesan cheese, egg & croutons",
   },
   {
-    id: 4,
-    name: "Chicken Salad",
-    price: 300,
-    category: "Non-Vegetarian",
+    id: "sal-5",
+    name: "Shrimp Caesar Salad",
+    price: 11.99,
+    category: "Fresh Salads",
+    description:
+      "Grilled shrimp, Romaine lettuce, parmesan cheese, egg & croutons",
   },
   {
-    id: 5,
-    name: "Tuna Salad",
-    price: 350,
-    category: "Non-Vegetarian",
+    id: "sal-6",
+    name: "Chef Salad",
+    price: 11.99,
+    category: "Fresh Salads",
+    description:
+      "Lettuce, tomato, cucumbers, turkey, ham, hard boiled egg, provolone cheese",
   },
 ];
 
+
+// ======================
+// APPETIZERS
+// ======================
+
+export const appetizers = [
+  {
+    id: "app-1",
+    name: "French Fries",
+    price: 3.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-2",
+    name: "Cheese Fries",
+    price: 6.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-3",
+    name: "Curly Fries",
+    price: 5.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-4",
+    name: "Curly Cheese Fries",
+    price: 8.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-5",
+    name: "(Beef) Bacon Cheese Fries",
+    price: 9.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-6",
+    name: "Onion Rings",
+    price: 4.0,
+    category: "Appetizers",
+  },
+  {
+    id: "app-7",
+    name: "Fried Mushrooms",
+    price: 6.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-8",
+    name: "Beef Sausage",
+    price: 4.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-9",
+    name: "Deen Halal Turkey Sausage",
+    price: 4.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-10",
+    name: "Chicken Loaded Fries & Soda",
+    price: 13.99,
+    category: "Appetizers",
+  },
+  {
+    id: "app-11",
+    name: "Shrimp Loaded Fries & Soda",
+    price: 13.99,
+    category: "Appetizers",
+  },
+];
+
+
+// ======================
+// COLD SANDWICHES & SUBS
+// ======================
+
+export const coldSandwiches = [
+  {
+    id: "cs-1",
+    name: "Turkey Breast - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-2",
+    name: "Turkey Breast - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-3",
+    name: "Honey Turkey Breast - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-4",
+    name: "Honey Turkey Breast - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-5",
+    name: "Tuna (White Albacore) - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-6",
+    name: "Tuna (White Albacore) - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-7",
+    name: "Chicken Salad - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-8",
+    name: "Chicken Salad - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-9",
+    name: "Kosher Italian - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-10",
+    name: "Kosher Italian - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-11",
+    name: "Roast Beef - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-12",
+    name: "Roast Beef - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-13",
+    name: "Corned Beef - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-14",
+    name: "Corned Beef - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-15",
+    name: "Beef Salami - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-16",
+    name: "Beef Salami - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-17",
+    name: "Turkey Salami - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-18",
+    name: "Turkey Salami - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-19",
+    name: "Beef Bologna - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-20",
+    name: "Beef Bologna - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-21",
+    name: "Egg Salad - Sandwich",
+    price: 6.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-22",
+    name: "Egg Salad - Sub",
+    price: 9.99,
+    category: "Cold Sandwiches & Subs",
+  },
+  {
+    id: "cs-23",
+    name: "Corned Beef Special",
+    price: 7.99,
+    category: "Cold Sandwiches & Subs",
+    description: "Rye bread with Swiss cheese, Russian dressing, coleslaw",
+  },
+  {
+    id: "cs-24",
+    name: "Corned Beef Reuben Special",
+    price: 7.99,
+    category: "Cold Sandwiches & Subs",
+    description: "Rye bread with Swiss cheese, Russian dressing, coleslaw",
+  },
+  {
+    id: "cs-25",
+    name: "Roast Beef Special",
+    price: 7.99,
+    category: "Cold Sandwiches & Subs",
+    description: "Rye bread with Swiss cheese, Russian dressing, coleslaw",
+  },
+  {
+    id: "cs-26",
+    name: "Turkey Breast Special",
+    price: 7.99,
+    category: "Cold Sandwiches & Subs",
+    description: "Rye bread with Swiss cheese, Russian dressing, coleslaw",
+  },
+];
+
+
+// ======================
+// WRAPS
+// ======================
+
+export const wraps = [
+  {
+    id: "wrap-1",
+    name: "Grilled Chicken Caesar",
+    price: 7.99,
+    category: "Wraps",
+  },
+  {
+    id: "wrap-2",
+    name: "Crispy Chicken Caesar",
+    price: 7.99,
+    category: "Wraps",
+  },
+  {
+    id: "wrap-3",
+    name: "Grilled Shrimp Caesar",
+    price: 7.99,
+    category: "Wraps",
+  },
+  {
+    id: "wrap-4",
+    name: "Shrimp & Chicken Caesar",
+    price: 7.99,
+    category: "Wraps",
+  },
+];
+
+
+// ======================
+// B.L.T.
+// ======================
+
+export const blt = [
+  {
+    id: "blt-1",
+    name: "B.L.T.",
+    price: 6.99,
+    category: "B.L.T.",
+    description: "With smoked beef bacon or turkey",
+  },
+  {
+    id: "blt-2",
+    name: "B.L.T. Special",
+    price: 6.99,
+    category: "B.L.T.",
+    description: "With fried egg, smoked beef or bacon",
+  },
+  {
+    id: "blt-3",
+    name: "B.L.T. Club",
+    price: 7.99,
+    category: "B.L.T.",
+  },
+];
+
+
+// ======================
+// CLUB SANDWICHES
+// ======================
+
+export const clubSandwiches = [
+  {
+    id: "club-1",
+    name: "Turkey Breast Club",
+    price: 9.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-2",
+    name: "Turkey Breast Club - Fries & Soda",
+    price: 13.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-3",
+    name: "Tuna (White Albacore) Club",
+    price: 9.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-4",
+    name: "Tuna (White Albacore) Club - Fries & Soda",
+    price: 13.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-5",
+    name: "Chicken Salad Club",
+    price: 9.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-6",
+    name: "Chicken Salad Club - Fries & Soda",
+    price: 13.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-7",
+    name: "Turkey & Ham Club",
+    price: 9.99,
+    category: "Club Sandwiches",
+    description: "Kosher",
+  },
+  {
+    id: "club-8",
+    name: "Turkey & Ham Club - Fries & Soda",
+    price: 13.99,
+    category: "Club Sandwiches",
+    description: "Kosher",
+  },
+  {
+    id: "club-9",
+    name: "Chicken Salad Homemade",
+    price: 9.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-10",
+    name: "Chicken Salad Homemade - Fries & Soda",
+    price: 13.99,
+    category: "Club Sandwiches",
+  },
+  {
+    id: "club-11",
+    name: "Buffalo Chicken",
+    price: 9.99,
+    category: "Club Sandwiches",
+    description: "Served with kosher beef bacon or turkey bacon",
+  },
+  {
+    id: "club-12",
+    name: "Buffalo Chicken - Fries & Soda",
+    price: 13.99,
+    category: "Club Sandwiches",
+    description: "Served with kosher beef bacon or turkey bacon",
+  },
+];
+
+
+// ======================
+// GYRO
+// ======================
+
+export const gyro = [
+  {
+    id: "gyro-1",
+    name: "Lamb Gyro",
+    price: 9.99,
+    category: "Gyro",
+  },
+  {
+    id: "gyro-2",
+    name: "Lamb Gyro - Fries & Soda",
+    price: 13.99,
+    category: "Gyro",
+  },
+  {
+    id: "gyro-3",
+    name: "Chicken Gyro",
+    price: 9.99,
+    category: "Gyro",
+  },
+  {
+    id: "gyro-4",
+    name: "Chicken Gyro - Fries & Soda",
+    price: 13.99,
+    category: "Gyro",
+  },
+  {
+    id: "gyro-5",
+    name: "Lamb Gyro with Feta Cheese",
+    price: 9.99,
+    category: "Gyro",
+  },
+  {
+    id: "gyro-6",
+    name: "Lamb Gyro with Feta Cheese - Fries & Soda",
+    price: 13.99,
+    category: "Gyro",
+  },
+];
+
+
+// ======================
+// RIB-EYE CHEESE STEAKS
+// ======================
+
+export const ribEyeCheeseSteaks = [
+  {
+    id: "steak-1",
+    name: "Cheese Steak (8oz.) - Sub",
+    price: 10.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-2",
+    name: "Cheese Steak (8oz.) - Fries & Soda",
+    price: 13.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-3",
+    name: "Chicken Cheese Steak (8oz.) - Sub",
+    price: 10.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-4",
+    name: "Chicken Cheese Steak (8oz.) - Fries & Soda",
+    price: 13.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-5",
+    name: "Buffalo Chicken Cheese Steak (12oz.) - Sub",
+    price: 11.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-6",
+    name: "Buffalo Chicken Cheese Steak (12oz.) - Fries & Soda",
+    price: 15.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-7",
+    name: "Mushroom & Swiss Cheese Steak (8oz.) - Sub",
+    price: 11.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-8",
+    name: "Mushroom & Swiss Cheese Steak (8oz.) - Fries & Soda",
+    price: 15.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-9",
+    name: "Pepper Cheesesteak (8oz.) - Sub",
+    price: 11.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-10",
+    name: "Pepper Cheesesteak (8oz.) - Fries & Soda",
+    price: 15.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-11",
+    name: "Smoked Beef Bacon Cheesesteak (8oz.) - Sub",
+    price: 12.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-12",
+    name: "Smoked Beef Bacon Cheesesteak (8oz.) - Fries & Soda",
+    price: 16.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-13",
+    name: "Smoked Turkey Bacon Cheesesteak (8oz.) - Sub",
+    price: 12.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-14",
+    name: "Smoked Turkey Bacon Cheesesteak (8oz.) - Fries & Soda",
+    price: 16.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-15",
+    name: "Shrimp Cheesesteak (8oz.) - Sub",
+    price: 12.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-16",
+    name: "Shrimp Cheesesteak (8oz.) - Fries & Soda",
+    price: 16.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-17",
+    name: "Sausage Cheesesteak (8oz.) - Sub",
+    price: 12.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+  {
+    id: "steak-18",
+    name: "Sausage Cheesesteak (8oz.) - Fries & Soda",
+    price: 16.99,
+    category: "Rib-Eye Cheese Steaks",
+  },
+];
+
+
+// ======================
+// CHEESEBURGERS
+// ======================
+
+export const cheeseburgers = [
+  {
+    id: "burger-1",
+    name: "Double Cheeseburger (8oz.)",
+    price: 7.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-2",
+    name: "Double Cheeseburger (8oz.) - Fries & Soda",
+    price: 11.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-3",
+    name: "Triple Cheeseburger (19oz.)",
+    price: 9.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-4",
+    name: "Triple Cheeseburger (19oz.) - Fries & Soda",
+    price: 13.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-5",
+    name: "Mushroom, Bacon & Swiss Cheeseburger",
+    price: 9.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-6",
+    name: "Mushroom, Bacon & Swiss Cheeseburger - Fries & Soda",
+    price: 13.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-7",
+    name: "Smoked Beef Bacon Cheeseburger",
+    price: 9.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-8",
+    name: "Smoked Beef Bacon Cheeseburger - Fries & Soda",
+    price: 13.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-9",
+    name: "Smoked Turkey Bacon Cheeseburger",
+    price: 9.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-10",
+    name: "Smoked Turkey Bacon Cheeseburger - Fries & Soda",
+    price: 13.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-11",
+    name: "Shrimp Cheeseburger",
+    price: 9.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-12",
+    name: "Shrimp Cheeseburger - Fries & Soda",
+    price: 13.99,
+    category: "Cheeseburgers",
+  },
+  {
+    id: "burger-13",
+    name: "Chopped Cheeseburger Sub",
+    price: 9.99,
+    category: "Cheeseburgers",
+    description:
+      "Sweet pepper, fried onions, lettuce, tomatoes, Hellmann's mayo, cheese, hot peppers",
+  },
+  {
+    id: "burger-14",
+    name: "Chopped Cheeseburger Sub - Fries & Soda",
+    price: 13.99,
+    category: "Cheeseburgers",
+    description:
+      "Sweet pepper, fried onions, lettuce, tomatoes, Hellmann's mayo, cheese, hot peppers",
+  },
+];
+
+
+// ======================
+// CHICKEN SANDWICHES
+// ======================
+
+export const chickenSandwiches = [
+  {
+    id: "chicken-1",
+    name: "Grilled Chicken Sandwich",
+    price: 7.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-2",
+    name: "Grilled Chicken Sandwich - Fries & Soda",
+    price: 11.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-3",
+    name: "Crispy Chicken Sandwich",
+    price: 7.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-4",
+    name: "Crispy Chicken Sandwich - Fries & Soda",
+    price: 13.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-5",
+    name: "Buffalo Chicken Sandwich",
+    price: 9.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-6",
+    name: "Buffalo Chicken Sandwich - Fries & Soda",
+    price: 13.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-7",
+    name: "Sweet Chili Chicken Sandwich",
+    price: 9.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-8",
+    name: "Sweet Chili Chicken Sandwich - Fries & Soda",
+    price: 13.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-9",
+    name: "Mango Habanero Chicken Sandwich",
+    price: 9.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-10",
+    name: "Mango Habanero Chicken Sandwich - Fries & Soda",
+    price: 13.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-11",
+    name: "Crispy Chicken Sandwich with Beef Bacon",
+    price: 9.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-12",
+    name: "Crispy Chicken Sandwich with Beef Bacon - Fries & Soda",
+    price: 13.99,
+    category: "Chicken Sandwiches",
+  },
+  {
+    id: "chicken-13",
+    name: "Chopped Chicken Sub",
+    price: 9.99,
+    category: "Chicken Sandwiches",
+    description:
+      "Sweet pepper, fried onions, lettuce, tomatoes, Hellmann's mayo, cheese, hot peppers",
+  },
+  {
+    id: "chicken-14",
+    name: "Chopped Chicken Sub - Fries & Soda",
+    price: 13.99,
+    category: "Chicken Sandwiches",
+    description:
+      "Sweet pepper, fried onions, lettuce, tomatoes, Hellmann's mayo, cheese, hot peppers",
+  },
+];
+
+
+// ============================================================
+// MENU CATEGORIES
+// ============================================================
 
 export const menus = [
   {
     id: 1,
-    name: "Starters",
-    bgColor: "#b73e3e",
-    icon: "🍲",
-    items: startersItem,
+    name: "Breakfast Sandwiches",
+    bgColor: "#fb6100",
+    icon: "🥪",
+    items: breakfastSandwiches,
   },
   {
     id: 2,
-    name: "Main Course",
-    bgColor: "#5b45b0",
-    icon: "🍛",
-    items: mainCourse,
+    name: "Breakfast Platters",
+    bgColor: "#fb6100",
+    icon: "🍳",
+    items: breakfastPlatters,
   },
   {
     id: 3,
-    name: "Beverages",
-    bgColor: "#7f167f",
-    icon: "🍹",
-    items: beverages,
+    name: "Side Orders",
+    bgColor: "#fb6100",
+    icon: "🍟",
+    items: sideOrders,
   },
   {
     id: 4,
-    name: "Soups",
-    bgColor: "#735f32",
-    icon: "🍜",
-    items: soups,
+    name: "Chicken Tenders",
+    bgColor: "#fb6100",
+    icon: "🍗",
+    items: chickenTenders,
   },
   {
     id: 5,
-    name: "Desserts",
-    bgColor: "#1d2569",
-    icon: "🍰",
-    items: desserts,
+    name: "Wings & Wing Zings",
+    bgColor: "#fb6100",
+    icon: "🍗",
+    items: wingsWingZings,
   },
   {
     id: 6,
-    name: "Pizzas",
-    bgColor: "#285430",
-    icon: "🍕",
-    items: pizzas,
+    name: "Quesadillas",
+    bgColor: "#fb6100",
+    icon: "🌮",
+    items: quesadillas,
   },
   {
     id: 7,
-    name: "Alcoholic Drinks",
-    bgColor: "#b73e3e",
-    icon: "🍺",
-    items: alcoholicDrinks,
+    name: "Fresh Salads",
+    bgColor: "#fb6100",
+    icon: "🥗",
+    items: freshSalads,
   },
   {
     id: 8,
-    name: "Salads",
-    bgColor: "#5b45b0",
-    icon: "🥗",
-    items: salads,
+    name: "Appetizers",
+    bgColor: "#fb6100",
+    icon: "🍟",
+    items: appetizers,
+  },
+  {
+    id: 9,
+    name: "Cold Sandwiches & Subs",
+    bgColor: "#fb6100",
+    icon: "🥪",
+    items: coldSandwiches,
+  },
+  {
+    id: 10,
+    name: "Wraps",
+    bgColor: "#fb6100",
+    icon: "🌯",
+    items: wraps,
+  },
+  {
+    id: 11,
+    name: "B.L.T.",
+    bgColor: "#fb6100",
+    icon: "🥪",
+    items: blt,
+  },
+  {
+    id: 12,
+    name: "Club Sandwiches",
+    bgColor: "#fb6100",
+    icon: "🥪",
+    items: clubSandwiches,
+  },
+  {
+    id: 13,
+    name: "Gyro",
+    bgColor: "#fb6100",
+    icon: "🥙",
+    items: gyro,
+  },
+  {
+    id: 14,
+    name: "Rib-Eye Cheese Steaks",
+    bgColor: "#fb6100",
+    icon: "🥩",
+    items: ribEyeCheeseSteaks,
+  },
+  {
+    id: 15,
+    name: "Cheeseburgers",
+    bgColor: "#fb6100",
+    icon: "🍔",
+    items: cheeseburgers,
+  },
+  {
+    id: 16,
+    name: "Chicken Sandwiches",
+    bgColor: "#fb6100",
+    icon: "🍔",
+    items: chickenSandwiches,
   },
 ];
-
-
-export const metricsData = [
-  {
-    title: "Revenue",
-    value: "₹50,846.90",
-    percentage: "12%",
-    color: "#025cca",
-    isIncrease: false,
-  },
-  {
-    title: "Outbound Clicks",
-    value: "10,342",
-    percentage: "16%",
-    color: "#02ca3a",
-    isIncrease: true,
-  },
-  {
-    title: "Total Customer",
-    value: "19,720",
-    percentage: "10%",
-    color: "#f6b100",
-    isIncrease: true,
-  },
-  {
-    title: "Event Count",
-    value: "20,000",
-    percentage: "10%",
-    color: "#be3e3f",
-    isIncrease: false,
-  },
-];
-
-
-export const itemsData = [
-  {
-    title: "Total Categories",
-    value: "8",
-    percentage: "12%",
-    color: "#5b45b0",
-    isIncrease: false,
-  },
-  {
-    title: "Total Dishes",
-    value: "50",
-    percentage: "12%",
-    color: "#285430",
-    isIncrease: true,
-  },
-  {
-    title: "Active Orders",
-    value: "12",
-    percentage: "12%",
-    color: "#735f32",
-    isIncrease: true,
-  },
-  {
-    title: "Total Tables",
-    value: "10",
-    color: "#7f167f",
-  },
-];
-
-
-export const orders = [
-  {
-    id: "101",
-    customer: "Amrit Raj",
-    status: "Ready",
-    dateTime: "January 18, 2025 08:32 PM",
-    items: 8,
-    tableNo: 3,
-    total: 250.0,
-  },
-  {
-    id: "102",
-    customer: "John Doe",
-    status: "In Progress",
-    dateTime: "January 18, 2025 08:45 PM",
-    items: 5,
-    tableNo: 4,
-    total: 180.0,
-  },
-  {
-    id: "103",
-    customer: "Emma Smith",
-    status: "Ready",
-    dateTime: "January 18, 2025 09:00 PM",
-    items: 3,
-    tableNo: 5,
-    total: 120.0,
-  },
-  {
-    id: "104",
-    customer: "Chris Brown",
-    status: "In Progress",
-    dateTime: "January 18, 2025 09:15 PM",
-    items: 6,
-    tableNo: 6,
-    total: 220.0,
-  },
-];
-
-
-export const buttons = [
-  {
-    label: "Add Table",
-    icon: <MdTableBar />,
-    action: "table",
-  },
-  {
-    label: "Add Category",
-    icon: <MdCategory />,
-    action: "category",
-  },
-  {
-    label: "Add Dishes",
-    icon: <BiSolidDish />,
-    action: "dishes",
-  },
-];
-
-
-export const tabs = ["Metrics", "Orders", "Payments"];
