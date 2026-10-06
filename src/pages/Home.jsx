@@ -1,20 +1,26 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 import BottomNav from "../components/shared/BottomNav";
 import Greetings from "../components/home/Greetings";
+
 import { BsCashCoin } from "react-icons/bs";
 import { GrInProgress } from "react-icons/gr";
 import { MdOutlineTableRestaurant } from "react-icons/md";
 import { FaReceipt } from "react-icons/fa";
+
 import MiniCard from "../components/home/MiniCard";
 import RecentOrders from "../components/home/RecentOrders";
 import PopularDishes from "../components/home/PopularDishes";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-[#161616] min-h-[calc(100vh-5rem)] text-white pb-24">
 
       {/* TOP DASHBOARD AREA */}
-      <div className="px-8 pt-6">
+      <div className="px-8 pt-6">git commit -m "Update menu navigation and home page"
 
         {/* GREETING */}
         <div className="bg-[#1c1c1c] border border-[#2f2f2f] rounded-2xl p-6 shadow-lg">
@@ -38,6 +44,7 @@ const Home = () => {
             footerNum={3.6}
           />
 
+          {/* OPEN TABLES */}
           <div className="bg-[#1f1f1f] border border-[#303030] rounded-2xl p-5 shadow-md hover:border-[#fb6100] transition">
             <div className="flex items-center justify-between">
 
@@ -62,6 +69,7 @@ const Home = () => {
             </p>
           </div>
 
+          {/* TODAY'S ORDERS */}
           <div className="bg-[#1f1f1f] border border-[#303030] rounded-2xl p-5 shadow-md hover:border-[#fb6100] transition">
             <div className="flex items-center justify-between">
 
@@ -89,7 +97,6 @@ const Home = () => {
         </div>
       </div>
 
-
       {/* MAIN DASHBOARD CONTENT */}
       <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6 px-8 mt-6">
 
@@ -99,16 +106,11 @@ const Home = () => {
           {/* RECENT ORDERS */}
           <div className="bg-[#1c1c1c] border border-[#2f2f2f] rounded-2xl p-5 shadow-lg">
 
-            <div className="flex items-center">
-
-            </div>
-
             <RecentOrders />
 
           </div>
 
         </div>
-
 
         {/* RIGHT SIDE */}
         <div className="flex flex-col gap-6">
@@ -120,30 +122,41 @@ const Home = () => {
               Quick Actions
             </h2>
 
-            
-
             <div className="grid grid-cols-2 gap-3">
 
-              <button className="bg-[#fb6100] hover:bg-[#e55700] rounded-xl py-4 font-semibold transition shadow-md">
+              {/* NEW ORDER -> MENU */}
+              <button
+                onClick={() => navigate("/menu")}
+                className="bg-[#fb6100] hover:bg-[#e55700] rounded-xl py-4 font-semibold transition shadow-md"
+              >
                 + New Order
               </button>
 
-              <button className="bg-[#252525] hover:bg-[#303030] border border-[#343434] rounded-xl py-4 font-semibold transition">
+              {/* VIEW TABLES */}
+              <button
+                onClick={() => navigate("/tables")}
+                className="bg-[#252525] hover:bg-[#303030] border border-[#343434] rounded-xl py-4 font-semibold transition"
+              >
                 View Tables
               </button>
 
-              <button className="bg-[#252525] hover:bg-[#303030] border border-[#343434] rounded-xl py-4 font-semibold transition">
+              {/* KITCHEN */}
+              <button
+                className="bg-[#252525] hover:bg-[#303030] border border-[#343434] rounded-xl py-4 font-semibold transition"
+              >
                 Kitchen
               </button>
 
-              <button className="bg-[#252525] hover:bg-[#303030] border border-[#343434] rounded-xl py-4 font-semibold transition">
+              {/* REPORTS */}
+              <button
+                className="bg-[#252525] hover:bg-[#303030] border border-[#343434] rounded-xl py-4 font-semibold transition"
+              >
                 Reports
               </button>
 
             </div>
 
           </div>
-
 
           {/* POPULAR DISHES */}
           <div className="bg-[#1c1c1c] border border-[#2f2f2f] rounded-2xl p-5 shadow-lg">
