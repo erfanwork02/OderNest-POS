@@ -17,7 +17,7 @@ const CartInfo = () => {
                   </div>
                   <div className="flex items-center justify-between mt-3">
                     <div claassName="flex items-center gap-3">
-                      <RiDeleteBack2Fill className="text-[#ababab] cursor-pointer" size={20}/>
+                      <RiDeleteBin2Fill className="text-[#ababab] cursor-pointer" size={20}/>
                       <FaNotesMedical className="text-[#ababab] cursor-pointer" size={20}/>
                     </div>
                     <p className="twxt-[#f5f5f5] text-md font-bold">123</p>
@@ -33,7 +33,7 @@ const CartInfo = () => {
                   </div>
                   <div className="flex items-center justify-between mt-3">
                     <div claassName="flex items-center gap-3">
-                      <RiDeleteBack2Fill className="text-[#ababab] cursor-pointer" size={20}/>
+                      <RiDeleteBin2Fill className="text-[#ababab] cursor-pointer" size={20}/>
                       <FaNotesMedical className="text-[#ababab] cursor-pointer" size={20}/>
                     </div>
                     <p className="twxt-[#f5f5f5] text-md font-bold">123</p>
@@ -49,7 +49,7 @@ const CartInfo = () => {
                   </div>
                   <div className="flex items-center justify-between mt-3">
                     <div claassName="flex items-center gap-3">
-                      <RiDeleteBack2Fill className="text-[#ababab] cursor-pointer" size={20}/>
+                      <RiDeleteBin2Fill className="text-[#ababab] cursor-pointer" size={20}/>
                       <FaNotesMedical className="text-[#ababab] cursor-pointer" size={20}/>
                     </div>
                     <p className="twxt-[#f5f5f5] text-md font-bold">123</p>

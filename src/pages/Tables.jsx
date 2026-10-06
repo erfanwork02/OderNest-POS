@@ -14,10 +14,22 @@ import { MdTableRestaurant } from "react-icons/md";
 import { tables } from "../constants";
 import BottomNav from "../components/shared/BottomNav";
 
+import { useDispatch } from "react-redux";
+import { updateTable } from "../redux/slices/customerSlice";
+
 const colors = ["#fb6100", "#00b86b", "#3478f6", "#f6b100"];
 
 function Tables() {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const selectTable = (table) => {
+    if (table.status === "Booked") return;
+
+    dispatch(updateTable({ tableNo: table.name }));
+    navigate("/menu");
+  };
 
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
@@ -417,6 +429,7 @@ function Tables() {
 
 
                   <button
+                    onClick={() => selectTable(table)}
                     className={`
                       text-xs
                       font-semibold
@@ -435,6 +448,7 @@ function Tables() {
                       ? "View Order"
                       : "Select Table"}
                   </button>
+
 
                 </div>
 

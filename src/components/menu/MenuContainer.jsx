@@ -28,7 +28,7 @@ const MenuContainer = () => {
     <>
       {/* Menu Categories */}
       <div className="grid grid-cols-4 gap-4 px-10 py-4 w-[100%]">
-        {selected?.items.map((menu) => {
+        {menus.map((menu) => {
           return (
             <div
               key={menu.id}
@@ -44,7 +44,7 @@ const MenuContainer = () => {
                 <h1 className="text-[#f5f5f5] text-lg font-semibold">
                   {menu.name}
                 </h1>
-                <buttom className="bg-[#02ca3a] text-white p-2 rounded-lg"><FaShoppingCart size={20} /></buttom>
+                <button className="bg-[#02ca3a] text-white p-2 rounded-lg"><FaShoppingCart size={20} /></button>
                 {selected.id === menu.id && (
                   <GrRadialSelected
                     className="text-white"
