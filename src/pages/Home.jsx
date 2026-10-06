@@ -20,7 +20,7 @@ const Home = () => {
     <section className="bg-[#161616] min-h-[calc(100vh-5rem)] text-white pb-24">
 
       {/* TOP DASHBOARD AREA */}
-      <div className="px-8 pt-6">
+      <div className="px-8 pt-6">git commit -m "Update menu navigation and home page"
 
         {/* GREETING */}
         <div className="bg-[#1c1c1c] border border-[#2f2f2f] rounded-2xl p-6 shadow-lg">
