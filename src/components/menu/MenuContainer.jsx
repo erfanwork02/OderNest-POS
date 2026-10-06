@@ -44,8 +44,8 @@ const MenuContainer = () => {
                 <h1 className="text-[#f5f5f5] text-lg font-semibold">
                   {menu.name}
                 </h1>
-
-                {selected?.id === menu.id && (
+                <button className="bg-[#02ca3a] text-white p-2 rounded-lg"><FaShoppingCart size={20} /></button>
+                {selected.id === menu.id && (
                   <GrRadialSelected
                     className="text-white"
                     size={20}
@@ -79,6 +79,7 @@ const MenuContainer = () => {
                 <button className="bg-[#02ca3a] text-white p-2 rounded-lg">
                   <FaShoppingCart size={20} />
                 </button>
+                
               </div>
 
               <div className="flex items-center justify-between w-full">

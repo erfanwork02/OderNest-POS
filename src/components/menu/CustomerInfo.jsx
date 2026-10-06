@@ -1,11 +1,16 @@
-import React from 'react'
+import { formatDate, getAvatarName } from "../../utils";
+import { useSelector } from "react-redux";
+import React, { useState } from "react";
+
 
 const CustomerInfo = () => {
+  const customerData = useSelector((state) => state.customer);
+  const [dateTime] = useState(() => new Date());
   return (
     <div>
       <div className="flex item-center justify-between px-4 py-3">
           <div className="flex flex-col item-start">
-            <h1 className= "text-md text-[#f5f5f5] font-semibold tracking-wide">Customer Name
+            <h1 className= "text-md text-[#f5f5f5] font-semibold tracking-wide"> {customerData.customerName || "Customer Name"}
             </h1>
             <p className="text-xs text-[#ababab] font-medium mt-1">101/Dine</p>
             <p className="text-xs text-[#ababab] font-medium mt-2">January 19, 2026 05:34 PM
@@ -16,5 +21,4 @@ const CustomerInfo = () => {
     </div>
   )
 }
-
 export default CustomerInfo

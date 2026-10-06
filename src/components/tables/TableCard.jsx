@@ -1,3 +1,6 @@
+import { useDispatch } from "react-redux";
+import { updateTable } from "../../redux/slices/customerSlice";
+
 import React from "react";
 import { getRandomBg } from "../../utils";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +9,12 @@ import { useNavigate } from "react-router-dom";
 const TableCard = ({ key, name, status, initials, seats }) => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     if (status === "Booked") return;
+
+    dispatch(updateTable({ tableNo: name }));
     navigate("/menu");
   };
 

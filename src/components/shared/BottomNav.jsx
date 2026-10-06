@@ -1,3 +1,6 @@
+import { useDispatch } from "react-redux";
+import { setCustomer } from "../../redux/slices/customerSlice";
+
 import React, { useState } from "react";
 
 import { FaHome } from "react-icons/fa";
@@ -10,10 +13,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const BottomNav = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [guestCount, setGuestCount] = useState(0);
+  
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -29,6 +36,7 @@ const BottomNav = () => {
   };
 
   const createOrder = () => {
+    dispatch(setCustomer({ name, phone, guests: guestCount }));
     closeModal();
     navigate("/tables");
   };
@@ -85,6 +93,7 @@ const BottomNav = () => {
 
         {/* DISH BUTTON */}
         <button
+          disabled={pathname === "/tables" || pathname === "/menu"}
           onClick={openModal}
           className="
             absolute
@@ -161,6 +170,8 @@ const BottomNav = () => {
 
               <div className="flex items-center rounded-xl px-4 py-3 bg-[#252525] border border-[#343434] focus-within:border-[#fb6100]">
                 <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   type="text"
                   placeholder="Enter customer name"
                   className="bg-transparent flex-1 text-white placeholder-[#666] focus:outline-none"
@@ -176,6 +187,8 @@ const BottomNav = () => {
 
               <div className="flex items-center rounded-xl px-4 py-3 bg-[#252525] border border-[#343434] focus-within:border-[#fb6100]">
                 <input
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   type="tel"
                   placeholder="+1 (555) 123-4567"
                   className="bg-transparent flex-1 text-white placeholder-[#666] focus:outline-none"
