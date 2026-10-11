@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { menus } from "../../constants";
+import {useDispatch } from "react-redux";
+import { addItems } from "../../redux/slices/cartSlice";
+
 
 import {
   FaMinus,
@@ -10,6 +13,7 @@ import {
 const MenuContainer = () => {
   const [selected, setSelected] = useState(menus[0]);
   const [quantities, setQuantities] = useState({});
+  const dispatch = useDispatch();
 
   const increment = (id) => {
     setQuantities((prev) => ({
@@ -19,13 +23,35 @@ const MenuContainer = () => {
   };
 
   const decrement = (id) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: Math.max((prev[id] || 0) - 1, 0),
-    }));
+  setQuantities((prev) => ({
+    ...prev,
+    [id]: Math.max((prev[id] || 0) - 1, 0),
+  }));
+};
+
+// Add selected menu item to the cart
+const handleAddToCart = (item) => {
+  const quantity = quantities[item.id] || 0;
+
+  if (quantity === 0) return;
+
+  const newItem = {
+    id: `${item.id}-${Date.now()}`,
+    name: item.name,
+    pricePerQuantity: Number(item.price),
+    quantity: quantity,
+    price: Number(item.price) * quantity,
   };
 
-  return (
+  dispatch(addItems(newItem));
+
+  setQuantities((prev) => ({
+    ...prev,
+    [item.id]: 0,
+  }));
+};
+
+return (
     <div className="w-full">
 
       {/* CATEGORIES */}
@@ -311,3 +337,4 @@ const MenuContainer = () => {
 };
 
 export default MenuContainer;
+

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { getTotalPrice } from "../../redux/slices/cartSlice";
 
 import {
   FaMoneyBillWave,
@@ -10,6 +12,16 @@ import {
 const Bill = () => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
 
+  // Get cart items and total price from Redux
+const cartData = useSelector((state) => state.cart);
+const total = useSelector(getTotalPrice);
+
+// Calculate tax and final bill
+const taxRate = 5.25;
+const tax = (total * taxRate) / 100;
+const totalPriceWithTax = total + tax;
+
+
   return (
     <div className="p-5">
 
@@ -20,11 +32,11 @@ const Bill = () => {
 
         <div className="flex items-center justify-between">
           <p className="text-[#ababab] text-sm">
-            Items (4)
+            Items ({cartData.reduce((count, item) => count + item.quantity, 0)})
           </p>
 
           <p className="text-white text-sm font-semibold">
-            $240.00
+            ${total.toFixed(2)}
           </p>
         </div>
 
@@ -34,7 +46,7 @@ const Bill = () => {
           </p>
 
           <p className="text-white text-sm font-semibold">
-            $24.00
+            ${tax.toFixed(2)}
           </p>
         </div>
 
@@ -49,7 +61,7 @@ const Bill = () => {
               </p>
 
               <p className="text-white text-2xl font-bold mt-1">
-                $264.00
+                ${totalPriceWithTax.toFixed(2)}
               </p>
             </div>
 

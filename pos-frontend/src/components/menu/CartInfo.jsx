@@ -1,28 +1,34 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { FaNotesMedical, FaMinus, FaPlus } from "react-icons/fa6";
+import { removeItem } from "../../redux/slices/cartSlice";
+
+
 
 const CartInfo = () => {
-  const cartItems = [
-    {
-      id: 1,
-      name: "Chicken Tikka",
-      quantity: 2,
-      price: 24.99,
-    },
-    {
-      id: 2,
-      name: "Butter Chicken",
-      quantity: 1,
-      price: 18.99,
-    },
-    {
-      id: 3,
-      name: "Garlic Naan",
-      quantity: 3,
-      price: 11.97,
-    },
-  ];
+const cartItems = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  // Reference to the cart items container
+const scrollRef = useRef(null);
+
+// Automatically scroll to the latest cart item
+useEffect(() => {
+  if (scrollRef.current) {
+    scrollRef.current.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }
+}, [cartItems]);
+
+
+
+  // Remove an item from the cart
+  const handleRemove = (id) => {
+    dispatch(removeItem(id));
+  };
 
   return (
     <div className="px-5 py-4">
@@ -38,8 +44,12 @@ const CartInfo = () => {
         </p>
       </div>
 
-      {/* CART ITEMS */}
-      <div className="flex flex-col gap-3">
+     {/* CART ITEMS */}
+<div
+  ref={scrollRef}
+  className="flex flex-col gap-3 max-h-[380px] overflow-y-auto scrollbar-hide"
+>
+  
 
         {cartItems.map((item) => (
           <div
@@ -84,6 +94,7 @@ const CartInfo = () => {
 
                 <button
                   title="Remove item"
+                  onClick={() => handleRemove(item.id)}
                   className="
                     w-8
                     h-8
@@ -190,3 +201,4 @@ const CartInfo = () => {
 };
 
 export default CartInfo;
+
