@@ -1,7 +1,7 @@
 const config = require("../config/config");
 
 const globalErrorHandler = (err, req, res, next) => {
-    const statusCode= err.statusCode || 500;
+    const statusCode= err.statusCode || 401;
 
     return res.status(statusCode).json({
         status: statusCode,

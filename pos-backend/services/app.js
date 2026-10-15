@@ -5,10 +5,13 @@ const connectDB = require("../config/database");
 const config = require("../config/config");
 const globalErrorHandler = require("../middlewares/globalErrorHandler");
 const createHttpError= require("http-errors");
+
 const app = express();
+
+app.use (express.json());
 app.set("json spaces", 2);
 
-const PORT = config.port || 8000;
+const PORT = config.port || 5100;
 
 connectDB();
 
@@ -19,6 +22,9 @@ app.get("/", (req, res) => {
     message: "Hello from OrderNest POS Backend!",
   });
 });
+
+// app.use("/api/users", require("../routes/userRoute"));
+app.use("/api/order", require("../routes/orderRoute"));
 
 // Global Error Handler
 app.use(globalErrorHandler);
