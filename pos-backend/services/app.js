@@ -23,7 +23,10 @@ app.get("/", (req, res) => {
   });
 });
 
-// app.use("/api/users", require("../routes/userRoute"));
+// User registration routes
+app.use("/api/user", require("../routes/userRoute"));
+
+// Order routes
 app.use("/api/order", require("../routes/orderRoute"));
 
 // Global Error Handler
