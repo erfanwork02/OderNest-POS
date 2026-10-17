@@ -1,38 +1,73 @@
 require("dotenv").config();
 
 const express = require("express");
+const cookieParser = require("cookie-parser");
+
 const connectDB = require("../config/database");
 const config = require("../config/config");
 const globalErrorHandler = require("../middlewares/globalErrorHandler");
-const createHttpError= require("http-errors");
 
 const app = express();
 
-app.use (express.json());
+
+
+// MIDDLEWARES
+
+app.use(express.json());
+app.use(cookieParser());
+
 app.set("json spaces", 2);
+
+
+
+// PORT
 
 const PORT = config.port || 5100;
 
+
+
+// DATABASE
+
 connectDB();
 
-// Root Endpoint
-app.get("/", (req, res) => {
 
-  res.json({
-    message: "Hello from OrderNest POS Backend!",
-  });
+
+// ROOT ENDPOINT
+
+app.get("/", (req, res) => {
+    res.json({
+        success: true,
+        message: "Hello from OrderNest POS Backend!"
+    });
 });
 
-// User registration routes
-app.use("/api/user", require("../routes/userRoute"));
 
-// Order routes
-app.use("/api/order", require("../routes/orderRoute"));
 
-// Global Error Handler
+// USER ROUTES
+
+app.use(
+    "/api/user",
+    require("../routes/userRoute")
+);
+
+
+
+// ORDER ROUTES
+
+app.use(
+    "/api/order",
+    require("../routes/orderRoute")
+);
+
+
+
+// GLOBAL ERROR HANDLER
+
 app.use(globalErrorHandler);
 
-// Server
+
+// START SERVER
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
