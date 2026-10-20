@@ -45,21 +45,9 @@ app.get("/", (req, res) => {
 
 // USER ROUTES
 
-app.use(
-    "/api/user",
-    require("../routes/userRoute")
-);
-
-
-
-// ORDER ROUTES
-
-app.use(
-    "/api/order",
-    require("../routes/orderRoute")
-);
-
-
+app.use("/api/user", require("../routes/userRoute"));
+app.use("/api/order",require("../routes/orderRoute"));
+app.use("/api/payment",require("../routes/PaymentRoute"));
 
 // GLOBAL ERROR HANDLER
 
