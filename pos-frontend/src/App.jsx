@@ -1,8 +1,10 @@
+
 import Menu from "./pages/Menu";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
+  useLocation,
 } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -12,21 +14,32 @@ import Tables from "./pages/Tables";
 import Header from "./components/shared/Header";
 import BottomNav from "./components/shared/BottomNav";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const hideNavigation = location.pathname === "/auth";
+
   return (
-    <Router>
-      <Header />
+    <>
+      {!hideNavigation && <Header />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/tables" element={<Tables />} />
-        <Route path = "/menu" element = {<Menu />} />
-        <Route path="*" element ={<div>Not Found </div>}/>
+        <Route path="/menu" element={<Menu />} />
+        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
 
-      <BottomNav />
+      {!hideNavigation && <BottomNav />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
