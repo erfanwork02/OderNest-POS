@@ -46,6 +46,7 @@ app.get("/", (req, res) => {
 // USER ROUTES
 
 app.use("/api/user", require("../routes/userRoute"));
+app.use("/api/table", require("../routes/tableRoute"));
 app.use("/api/order",require("../routes/orderRoute"));
 app.use("/api/payment",require("../routes/PaymentRoute"));
 
