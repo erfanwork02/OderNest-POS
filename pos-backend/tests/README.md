@@ -10,7 +10,8 @@ Table endpoints (accessToken cookie required):
 - PUT /api/table/:id — { "status": "Available" } clears currentOrder
 
 Order endpoints retain their existing request format. Invalid IDs and missing records
-return 404; blank order-status updates return 400. New orders include timestamps.
+return 404; blank order-status updates return 400. New orders include timestamps and accept an optional `table` ObjectId reference.
+Bills accept tutorial `total` or the existing `totals` field; at least one is required.
 
 The suite covers table/order routes and authentication enforcement, not payment
 integration or the frontend. A Booked table stores an order reference; it does not
