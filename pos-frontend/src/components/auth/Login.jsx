@@ -1,7 +1,15 @@
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/userSlice";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../../https";
+import { useState } from "react";
+import { enqueueSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
-import React, { useState } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,9 +22,46 @@ const Login = () => {
     }));
   };
 
+  // Login API Mutation
+  const loginMutation = useMutation({
+    mutationFn: (reqData) => login(reqData),
+
+   
+
+onSuccess: (res) => {
+  const { data } = res;
+
+  dispatch(
+    setUser({
+      _id: data.data.id,
+      name: data.data.name,
+      email: data.data.email,
+      phone: data.data.phone,
+      role: data.data.role,
+    })
+  );
+
+  enqueueSnackbar(data.message || "Login successful!", {
+    variant: "success",
+  });
+  navigate("/");
+},
+
+
+onError: (error) => {
+  const message =
+    error.response?.data?.message || "Login failed. Please try again.";
+
+  enqueueSnackbar(message, {
+    variant: "error",
+  });
+},
+});
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login form submitted");
+    loginMutation.mutate(formData);
   };
 
   return (
@@ -69,9 +114,10 @@ const Login = () => {
         {/* Sign In Button */}
         <button
           type="submit"
-          className="mt-6 w-full rounded-lg bg-yellow-400 py-4 font-semibold text-black"
+          disabled={loginMutation.isPending}
+          className="mt-6 w-full rounded-lg bg-yellow-400 py-4 font-semibold text-black disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Sign in
+          {loginMutation.isPending ? "Signing in..." : "Sign in"}
         </button>
       </form>
     </div>
@@ -79,3 +125,4 @@ const Login = () => {
 };
 
 export default Login;
+

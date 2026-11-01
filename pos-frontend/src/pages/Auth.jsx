@@ -1,7 +1,12 @@
 
+import React, { useState } from "react";
 import restaurant from "../assets/hero.png";
+import Register from "../components/auth/Register";
+import Login from "../components/auth/Login";
 
 const Auth = () => {
+  const [isRegister, setIsRegister] = useState(false);
+
   return (
     <div className="flex min-h-screen w-full bg-[#1a1a1a]">
       {/* Left Section */}
@@ -27,27 +32,35 @@ const Auth = () => {
 
       {/* Right Section */}
       <div className="flex min-h-screen w-full flex-col bg-[#1a1a1a] p-10 md:w-1/2">
+        {/* Logo / Title */}
         <div className="flex flex-col items-center gap-2">
           <h1 className="text-2xl font-semibold tracking-wide text-white">
             OderNest POS
           </h1>
         </div>
 
+        {/* Dynamic Heading */}
         <h2 className="mb-10 mt-10 text-center text-4xl font-semibold text-yellow-400">
-          Employee Registration
+          {isRegister ? "Employee Registration" : "Employee Login"}
         </h2>
 
-        {/* Registration Component Will Go Here */}
+        {/* Registration / Login Component */}
+        {isRegister ? <Register setIsRegister={setIsRegister} /> : <Login />}
 
+        {/* Switch Between Registration and Login */}
         <div className="mt-6 flex justify-center">
           <p className="text-sm text-[#ababab]">
-            Already have an account?{" "}
-            <a
-              className="font-semibold text-yellow-400 hover:underline"
-              href="#"
+            {isRegister
+              ? "Already have an account?"
+              : "Don't have an account?"}
+
+            <button
+              type="button"
+              onClick={() => setIsRegister(!isRegister)}
+              className="ml-2 font-semibold text-yellow-400 hover:underline"
             >
-              Sign in
-            </a>
+              {isRegister ? "Sign in" : "Sign up"}
+            </button>
           </p>
         </div>
       </div>

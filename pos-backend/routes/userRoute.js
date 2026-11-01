@@ -1,9 +1,9 @@
 const express = require("express");
-
 const {
     register,
     login,
-    getUserData
+    getUserData,
+    logout
 } = require("../controllers/userController");
 
 const {
@@ -17,6 +17,7 @@ const router = express.Router();
 router.route("/register").post(register);
 
 router.route("/login").post(login);
+router.route("/logout").post(isVerifiedUser, logout);
 
 // Protected Route - Get logged-in user information
 router.route("/").get(isVerifiedUser, getUserData);

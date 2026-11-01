@@ -174,8 +174,32 @@ const getUserData = async (req, res, next) => {
 };
 
 
+
+// LOGOUT USER
+
+const logout = async (req, res, next) => {
+    try {
+        res.clearCookie("accessToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "User logout successfully!"
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
 module.exports = {
     register,
     login,
-    getUserData
+    getUserData,
+    logout
 };
