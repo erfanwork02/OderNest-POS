@@ -8,7 +8,7 @@ const {
 
 const {
     isVerifiedUser
-} = require("../middlewares/tokenVerification");
+} = require("../middleware/tokenVerification");
 
 const router = express.Router();
 

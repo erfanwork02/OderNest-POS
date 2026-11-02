@@ -1,10 +1,3 @@
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import Menu from "./pages/Menu";
-import useLoadData from "./hooks/useLoadData";
-import FullScreenLoader from "./components/shared/FullScreenLoader";
-
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,69 +9,37 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Orders from "./pages/Orders";
 import Tables from "./pages/Tables";
+import Menu from "./pages/Menu";
+import Dashboard from "./pages/Dashboard";
+
 import Header from "./components/shared/Header";
 import BottomNav from "./components/shared/BottomNav";
-function ProtectedRoutes({ children }) {
-  const isAuth = useSelector((state) => state.user.isAuth);
 
-  if (!isAuth) {
-    return <Navigate to="/auth" replace />;
-  }
-
-  return children;
-}
 function AppContent() {
-  
-  const isLoading = useLoadData();
   const location = useLocation();
-  const isAuth = useSelector((state) => state.user.isAuth);
 
-  const hideNavigation = location.pathname === "/auth" || !isAuth;
+  const hideNavigation = location.pathname === "/auth";
 
-  if (isLoading) {
-    return <FullScreenLoader />;
-  }
-
-  
   return (
     <>
       {!hideNavigation && <Header />}
 
       <Routes>
-        <Route
-  path="/"
-  element={
-    <ProtectedRoutes>
-      <Home />
-    </ProtectedRoutes>
-  }
-/>
+        <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/tables" element={<Tables />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+
         <Route
-  path="/orders"
-  element={
-    <ProtectedRoutes>
-      <Orders />
-    </ProtectedRoutes>
-  }
-/>
-        <Route
-  path="/tables"
-  element={
-    <ProtectedRoutes>
-      <Tables />
-    </ProtectedRoutes>
-  }
-/>
-        <Route
-  path="/menu"
-  element={
-    <ProtectedRoutes>
-      <Menu />
-    </ProtectedRoutes>
-  }
-/>
-        <Route path="*" element={<div>Not Found</div>} />
+          path="*"
+          element={
+            <div className="min-h-screen bg-[#161616] text-white flex items-center justify-center">
+              Page Not Found
+            </div>
+          }
+        />
       </Routes>
 
       {!hideNavigation && <BottomNav />}

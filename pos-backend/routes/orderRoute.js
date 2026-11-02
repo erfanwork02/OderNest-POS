@@ -7,7 +7,7 @@ const {
   updateOrder,
 } = require("../controllers/orderControllers");
 
-const { isVerifiedUser } = require("../middlewares/tokenVerification");
+const { isVerifiedUser } = require("../middleware/tokenVerification");
 
 const router = express.Router();
 

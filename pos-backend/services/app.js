@@ -1,12 +1,12 @@
+const cors = require("cors");
 require("dotenv").config();
 
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
 
 const connectDB = require("../config/database");
 const config = require("../config/config");
-const globalErrorHandler = require("../middlewares/globalErrorHandler");
+const globalErrorHandler = require("../middleware/globalErrorHandler");
 
 const app = express();
 
@@ -41,17 +41,17 @@ connectDB();
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Hello from OrderNest POS Backend!"
+    message: "Hello from OrderNest POS Backend!",
   });
 });
 
 
-// USER ROUTES
+// ROUTES
 
 app.use("/api/user", require("../routes/userRoute"));
 app.use("/api/table", require("../routes/tableRoute"));
 app.use("/api/order", require("../routes/orderRoute"));
-app.use("/api/payment", require("../routes/paymentRoute"));
+app.use("/api/payment", require("../routes/PaymentRoute"));
 
 
 // GLOBAL ERROR HANDLER

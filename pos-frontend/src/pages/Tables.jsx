@@ -4,52 +4,59 @@ import { useNavigate } from "react-router-dom";
 import {
   FaArrowLeft,
   FaSearch,
-  FaUsers,
-  FaCheckCircle,
-  FaClock,
 } from "react-icons/fa";
 
 import { MdTableRestaurant } from "react-icons/md";
 
-import { tables } from "../constants";
 import BottomNav from "../components/shared/BottomNav";
+import TableCard from "../components/tables/TableCard";
 
-import { useDispatch } from "react-redux";
-import { updateTable } from "../redux/slices/customerSlice";
-
-const colors = ["#fb6100", "#00b86b", "#3478f6", "#f6b100"];
+import { getTables } from "../https";
+import { useQuery } from "@tanstack/react-query";
 
 function Tables() {
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
-  const selectTable = (table) => {
-    if (table.status === "Booked") return;
-
-    dispatch(updateTable({ tableNo: table.name }));
-    navigate("/menu");
-  };
-
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
+
+  const {
+    data: resData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["tables"],
+    queryFn: getTables,
+  });
+
+  const tables = resData?.data?.data || [];
 
   const bookedCount = tables.filter(
     (table) => table.status === "Booked"
   ).length;
 
   const availableCount = tables.filter(
-    (table) => table.status !== "Booked"
+    (table) => table.status === "Available"
   ).length;
 
   const visibleTables = tables.filter((table) => {
     const matchesFilter =
       filter === "All" ||
-      table.status.toLowerCase() === filter.toLowerCase();
+      table.status?.toLowerCase() === filter.toLowerCase();
 
-    const matchesSearch = table.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const customerName =
+      table.currentOrder?.customerDetails?.name || "";
+
+    const searchValue = search.toLowerCase();
+
+    const matchesSearch =
+      `Table ${table.tableNo}`
+        .toLowerCase()
+        .includes(searchValue) ||
+      customerName
+        .toLowerCase()
+        .includes(searchValue);
 
     return matchesFilter && matchesSearch;
   });
@@ -69,16 +76,46 @@ function Tables() {
     },
   ];
 
+  if (isLoading) {
+    return (
+      <section className="min-h-screen bg-[#161616] text-white flex items-center justify-center">
+        <p className="text-[#ababab]">
+          Loading tables...
+        </p>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="min-h-screen bg-[#161616] text-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-400 font-semibold">
+            Failed to load tables
+          </p>
+
+          <p className="text-[#777] text-sm mt-2">
+            {error?.response?.data?.message ||
+              error?.message}
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="min-h-screen bg-[#161616] text-white pb-28">
 
       {/* PAGE HEADER */}
+
       <div className="bg-[#1c1c1c] border-b border-[#2f2f2f] px-8 py-6">
 
         {/* TOP ROW */}
+
         <div className="flex items-center justify-between">
 
           {/* LEFT */}
+
           <div className="flex items-center gap-4">
 
             <button
@@ -116,6 +153,7 @@ function Tables() {
           </div>
 
           {/* RIGHT SUMMARY */}
+
           <div className="flex items-center gap-3">
 
             <div className="bg-[#252525] border border-[#343434] rounded-xl px-5 py-3">
@@ -151,11 +189,12 @@ function Tables() {
           </div>
         </div>
 
-
         {/* SEARCH + FILTER */}
+
         <div className="flex items-center justify-between mt-6 gap-6">
 
           {/* SEARCH */}
+
           <div
             className="
               flex
@@ -176,7 +215,7 @@ function Tables() {
 
             <input
               type="text"
-              placeholder="Search table..."
+              placeholder="Search table or customer..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="
@@ -190,14 +229,16 @@ function Tables() {
             />
           </div>
 
-
           {/* FILTERS */}
+
           <div className="flex items-center bg-[#252525] border border-[#343434] rounded-xl p-1.5">
 
             {filters.map((option) => (
               <button
                 key={option.name}
-                onClick={() => setFilter(option.name)}
+                onClick={() =>
+                  setFilter(option.name)
+                }
                 className={`
                   flex
                   items-center
@@ -232,7 +273,6 @@ function Tables() {
                 >
                   {option.count}
                 </span>
-
               </button>
             ))}
 
@@ -240,11 +280,12 @@ function Tables() {
         </div>
       </div>
 
-
       {/* MAIN CONTENT */}
+
       <div className="px-8 py-6">
 
         {/* SECTION HEADER */}
+
         <div className="flex items-center justify-between mb-6">
 
           <div>
@@ -270,8 +311,8 @@ function Tables() {
           </div>
         </div>
 
-
         {/* TABLE GRID */}
+
         <div
           className="
             grid
@@ -283,182 +324,16 @@ function Tables() {
             gap-5
           "
         >
-          {visibleTables.map((table, index) => {
-            const isBooked = table.status === "Booked";
-
-            return (
-              <div
-                key={table.id}
-                className="
-                  group
-                  relative
-                  overflow-hidden
-                  bg-[#1c1c1c]
-                  border
-                  border-[#303030]
-                  rounded-2xl
-                  p-5
-                  shadow-lg
-                  hover:border-[#fb6100]/70
-                  hover:bg-[#202020]
-                  hover:-translate-y-1
-                  transition-all
-                  duration-300
-                  cursor-pointer
-                "
-              >
-
-                {/* TOP ACCENT */}
-                <div
-                  className={`
-                    absolute
-                    top-0
-                    left-0
-                    right-0
-                    h-[3px]
-                    ${
-                      isBooked
-                        ? "bg-[#fb6100]"
-                        : "bg-green-500"
-                    }
-                  `}
-                />
-
-
-                {/* TOP */}
-                <div className="flex items-start justify-between">
-
-                  <div>
-                    <p className="text-[#777] text-xs uppercase tracking-widest">
-                      Table
-                    </p>
-
-                    <h2 className="text-xl font-bold mt-1">
-                      {table.name}
-                    </h2>
-                  </div>
-
-
-                  {/* STATUS */}
-                  <span
-                    className={`
-                      flex
-                      items-center
-                      gap-2
-                      px-3
-                      py-1.5
-                      rounded-lg
-                      text-xs
-                      font-semibold
-                      ${
-                        isBooked
-                          ? "bg-[#fb6100]/10 text-[#fb6100]"
-                          : "bg-green-500/10 text-green-400"
-                      }
-                    `}
-                  >
-                    {isBooked ? (
-                      <FaClock size={11} />
-                    ) : (
-                      <FaCheckCircle size={11} />
-                    )}
-
-                    {table.status}
-                  </span>
-                </div>
-
-
-                {/* TABLE VISUAL */}
-                <div className="flex justify-center items-center py-8">
-
-                  <div className="relative">
-
-                    {/* CHAIRS */}
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-7 h-3 rounded-md bg-[#343434]" />
-
-                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-7 h-3 rounded-md bg-[#343434]" />
-
-                    <div className="absolute top-1/2 -left-5 -translate-y-1/2 w-3 h-7 rounded-md bg-[#343434]" />
-
-                    <div className="absolute top-1/2 -right-5 -translate-y-1/2 w-3 h-7 rounded-md bg-[#343434]" />
-
-
-                    {/* TABLE */}
-                    <div
-                      className="
-                        w-20
-                        h-20
-                        rounded-2xl
-                        flex
-                        items-center
-                        justify-center
-                        shadow-xl
-                        group-hover:scale-105
-                        transition-transform
-                      "
-                      style={{
-                        backgroundColor:
-                          colors[index % colors.length],
-                      }}
-                    >
-                      <span className="text-white text-xl font-bold">
-                        {table.initial}
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-
-
-                {/* DIVIDER */}
-                <div className="h-[1px] bg-[#303030] mb-4" />
-
-
-                {/* BOTTOM INFO */}
-                <div className="flex items-center justify-between">
-
-                  <div className="flex items-center gap-2 text-[#8f8f8f]">
-
-                    <FaUsers size={14} />
-
-                    <span className="text-sm">
-                      Up to 4 guests
-                    </span>
-
-                  </div>
-
-
-                  <button
-                    onClick={() => selectTable(table)}
-                    className={`
-                      text-xs
-                      font-semibold
-                      px-3
-                      py-2
-                      rounded-lg
-                      transition
-                      ${
-                        isBooked
-                          ? "bg-[#343434] text-[#ababab] hover:text-white"
-                          : "bg-[#fb6100] text-white hover:bg-[#e55700]"
-                      }
-                    `}
-                  >
-                    {isBooked
-                      ? "View Order"
-                      : "Select Table"}
-                  </button>
-
-
-                </div>
-
-              </div>
-            );
-          })}
+          {visibleTables.map((table) => (
+            <TableCard
+              key={table._id}
+              table={table}
+            />
+          ))}
         </div>
 
-
         {/* EMPTY STATE */}
+
         {visibleTables.length === 0 && (
           <div className="flex flex-col items-center justify-center py-24">
 

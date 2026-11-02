@@ -51,7 +51,7 @@ test('authenticated table and order endpoints against isolated MongoDB', async t
     app.use(express.json(), require('cookie-parser')());
     app.use('/api/table', require('../routes/tableRoute'));
     app.use('/api/order', require('../routes/orderRoute'));
-    app.use(require('../middlewares/globalErrorHandler'));
+    app.use(require('../middleware/globalErrorHandler'));
     server = app.listen(0, '127.0.0.1');
     await new Promise(resolve => server.once('listening', resolve));
     const base = `http://127.0.0.1:${server.address().port}`;
