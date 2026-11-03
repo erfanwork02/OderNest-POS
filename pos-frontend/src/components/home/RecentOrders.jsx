@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import OrderList from "./OrderList";
 
+import useOrders from "../../hooks/useOrders";
+import { matchesOrder } from "../../utils/orderDisplay";
+import { useNavigate } from "react-router-dom";
+
 const RecentOrders = () => {
+  const navigate = useNavigate();
+  const { data: orders = [], isPending, isError, refetch } = useOrders();
   const [search, setSearch] = useState("");
 
   return (
@@ -18,7 +24,7 @@ const RecentOrders = () => {
           
         </div>
 
-        <button className="text-[#fb6100] text-sm font-semibold hover:text-[#ff7b2c] transition">
+        <button onClick={() => navigate("/orders")} className="text-[#fb6100] text-sm font-semibold hover:text-[#ff7b2c] transition">
           View All
         </button>
       </div>
@@ -73,17 +79,7 @@ const RecentOrders = () => {
         "
       >
         <div className="flex flex-col gap-3 ">
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
-          <OrderList />
+          {isPending ? <p className="text-white">Loading orders...</p> : isError ? <p role="alert" className="text-white">Unable to load orders. <button onClick={() => refetch()}>Retry</button></p> : orders.filter((order) => matchesOrder(order, search)).length ? orders.filter((order) => matchesOrder(order, search)).map((order) => <OrderList key={order._id} order={order} />) : <p className="text-gray-400">No orders available</p>}
         </div>
       </div>
 

@@ -12,6 +12,8 @@ const cartSlice = createSlice({
       state.push(action.payload);
     },
 
+    removeAllItems: () => [],
+
     // Remove a food item from the cart
     removeItem: (state, action) => {
       return state.filter(
@@ -22,7 +24,7 @@ const cartSlice = createSlice({
 });
 
 // Export actions for other components
-export const { addItems, removeItem } = cartSlice.actions;
+export const { addItems, removeItem, removeAllItems } = cartSlice.actions;
 
 export const getTotalPrice = (state) =>
   state.cart.reduce((total, item) => total + item.price, 0);

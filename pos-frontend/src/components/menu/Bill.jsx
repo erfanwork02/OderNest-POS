@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getTotalPrice } from "../../redux/slices/cartSlice";
 
 import {
@@ -9,7 +9,18 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { addOrder, updateTable } from "../../https/index";
+import { removeAllItems } from "../../redux/slices/cartSlice";
+import { removeCustomer } from "../../redux/slices/customerSlice";
+import { createOrderData, placeTableOrder } from "../../utils/orderFlow";
+
 const Bill = () => {
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const customerData = useSelector((state) => state.customer);
+  const savedOrderRef = useRef(null);
+  const submittingRef = useRef(false);
   const [paymentMethod, setPaymentMethod] = useState();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCardReady, setIsCardReady] = useState(false);
@@ -94,6 +105,7 @@ const Bill = () => {
 
   // Handle Place Order
   const handlePlaceOrder = async () => {
+    if (submittingRef.current) return;
     if (!paymentMethod) {
       alert("Please select a payment method");
       return;
@@ -106,10 +118,34 @@ const Bill = () => {
 
     // CASH PAYMENT
     if (paymentMethod === "cash") {
-      console.log("Payment Method: Cash");
-      console.log("Total:", totalPriceWithTax.toFixed(2));
-
-      alert("Cash payment selected. Order can be placed.");
+      submittingRef.current = true;
+      setIsProcessing(true);
+      try {
+        const orderData = savedOrderRef.current ? null : createOrderData(customerData, cartData, total, taxRate);
+        await placeTableOrder({
+          orderData,
+          savedOrder: savedOrderRef.current,
+          addOrder,
+          updateTable,
+          onCreated: (order) => { savedOrderRef.current = order; },
+        });
+        savedOrderRef.current = null;
+        dispatch(removeAllItems());
+        dispatch(removeCustomer());
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["orders"] }),
+          queryClient.invalidateQueries({ queryKey: ["tables"] }),
+        ]);
+        alert("Order placed and table booked successfully.");
+      } catch (error) {
+        const message = error.response?.data?.message || error.message;
+        alert(savedOrderRef.current
+          ? `Order saved, but table booking failed: ${message}. Select Cash and retry to book the same order.`
+          : message);
+      } finally {
+        submittingRef.current = false;
+        setIsProcessing(false);
+      }
 
       return;
     }

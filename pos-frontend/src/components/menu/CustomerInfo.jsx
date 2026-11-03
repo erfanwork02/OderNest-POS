@@ -31,7 +31,7 @@ const CustomerInfo = () => {
           </h1>
 
           <p className="text-[#ababab] text-sm mt-1">
-            {customerData.tableNo || "Table 101"} / Dine In
+            {customerData.tableNo || "No table selected"} / Dine In
           </p>
 
           <p className="text-[#777] text-xs mt-2">

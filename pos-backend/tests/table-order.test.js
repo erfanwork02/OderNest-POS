@@ -45,7 +45,7 @@ test('authenticated table and order endpoints against isolated MongoDB', async t
     const User = require('../models/userModel');
     const Table = require('../models/tableModel');
     await Table.init();
-    const user = await User.create({ name: 'Test', email: 'test@example.com', phone: '1234567890', password: 'test-password', role: 'employee' });
+    const user = await User.create({ name: 'Test', email: 'test@example.com', phone: '1234567890', password: 'test-password', role: 'Waiter' });
     const cookie = `accessToken=${jwt.sign({ id: user.id }, process.env.JWT_SECRET)}`;
     const app = express();
     app.use(express.json(), require('cookie-parser')());
@@ -68,10 +68,10 @@ test('authenticated table and order endpoints against isolated MongoDB', async t
     });
     let table, order;
     await t.test('tables reject missing/invalid numbers and duplicates', async () => {
-        for (const tableNo of [undefined, 0, -1, 1.5, 'abc']) await request('POST', '/api/table', { tableNo }, 400);
-        table = (await request('POST', '/api/table', { tableNo: 1 }, 201)).data;
+        for (const tableNo of [undefined, 0, -1, 1.5, 'abc']) await request('POST', '/api/table', { tableNo, seats: 4 }, 400);
+        table = (await request('POST', '/api/table', { tableNo: 1, seats: 4 }, 201)).data;
         assert.equal(table.status, 'Available');
-        await request('POST', '/api/table', { tableNo: 1 }, 400);
+        await request('POST', '/api/table', { tableNo: 1, seats: 4 }, 409);
     });
     await t.test('create, fetch, list and update an order; persist timestamps', async () => {
         order = (await request('POST', '/api/order', { customerDetails: { name: 'Guest', phone: '1234567890', guests: 2 }, orderStatus: 'In Progress', bills: { totals: 10, tax: 1, totalWithTax: 11 }, items: [{ name: 'Rice', quantity: 1 }] }, 201)).data;
@@ -97,9 +97,18 @@ test('authenticated table and order endpoints against isolated MongoDB', async t
         });
         assert.equal((await request('GET', `/api/order/${order._id}`, undefined, 200)).data.bills.totals, 10);
     });
+    await t.test('list orders with populated tables and share Ready status', async () => {
+        const listed = (await request('GET', '/api/order', undefined, 200)).data;
+        const linked = listed.find(item => item.table?._id === table._id);
+        assert.equal(linked.table.tableNo, 1);
+        await request('PUT', `/api/order/${linked._id}`, { orderStatus: 'Ready' }, 200);
+        const refreshed = (await request('GET', '/api/order', undefined, 200)).data;
+        assert.equal(refreshed.find(item => item._id === linked._id).orderStatus, 'Ready');
+        assert.equal(refreshed.find(item => item._id === linked._id).table.tableNo, 1);
+    });
     await t.test('book a table, populate its order and release it', async () => {
         const booked = await request('PUT', `/api/table/${table._id}`, { status: 'Booked', orderId: order._id }, 200);
-        assert.equal(booked.data.currentOrder, order._id);
+        assert.equal(booked.data.currentOrder._id, order._id);
         const tables = await request('GET', '/api/table', undefined, 200);
         assert.equal(tables.data[0].currentOrder._id, order._id);
         const available = await request('PUT', `/api/table/${table._id}`, { status: 'Available' }, 200);
@@ -107,11 +116,29 @@ test('authenticated table and order endpoints against isolated MongoDB', async t
         await request('PUT', `/api/table/${table._id}`, { status: 'Booked', orderId: 'bad' }, 400);
         await request('PUT', `/api/table/${table._id}`, { status: 'Unknown' }, 400);
     });
-    await t.test('malformed and absent IDs return 404 instead of server errors', async () => {
+    await t.test('frontend checkout flow creates one order, books the selected table and persists Ready', async () => {
+        const { createOrderData, placeTableOrder } = await import('../../pos-frontend/src/utils/orderFlow.js');
+        const selected = (await request('POST', '/api/table', { tableNo: 2, seats: 4 }, 201)).data;
+        const data = createOrderData({ customerName: 'Cash Guest', customerPhone: '1234567890', guests: 2, table: { tableId: selected._id, tableNo: 2 } }, [{ name: 'Meal', quantity: 2, price: 20 }], 20, 5.25);
+        const saved = await placeTableOrder({
+            orderData: data,
+            addOrder: async body => ({ data: await request('POST', '/api/order', body, 201) }),
+            updateTable: async ({ tableId, ...body }) => request('PUT', `/api/table/${tableId}`, body, 200),
+            onCreated: () => {},
+        });
+        const listed = (await request('GET', '/api/order', undefined, 200)).data.find(item => item._id === saved._id);
+        assert.equal(listed.table.tableNo, 2);
+        assert.equal(listed.bills.totalWithTax, 21.05);
+        const tables = (await request('GET', '/api/table', undefined, 200)).data;
+        assert.equal(tables.find(item => item._id === selected._id).currentOrder.customerDetails.name, 'Cash Guest');
+        await request('PUT', `/api/order/${saved._id}`, { orderStatus: 'Ready' }, 200);
+        assert.equal((await request('GET', '/api/order', undefined, 200)).data.find(item => item._id === saved._id).orderStatus, 'Ready');
+    });
+    await t.test('malformed and absent IDs return client errors instead of server errors', async () => {
         for (const id of ['bad', new mongoose.Types.ObjectId().toString()]) {
             await request('GET', `/api/order/${id}`, undefined, 404);
             await request('PUT', `/api/order/${id}`, { orderStatus: 'Completed' }, 404);
-            await request('PUT', `/api/table/${id}`, { status: 'Available' }, 404);
+            await request('PUT', `/api/table/${id}`, { status: 'Available' }, id === 'bad' ? 400 : 404);
         }
     });
 });

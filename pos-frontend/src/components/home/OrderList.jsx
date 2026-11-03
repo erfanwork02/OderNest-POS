@@ -1,7 +1,9 @@
-import React from "react";
-import { FaCheckDouble, FaCircle } from "react-icons/fa";
+import { FaCircle } from "react-icons/fa";
 
-function OrderList() {
+import { getAvatarName } from "../../utils";
+import { itemCount } from "../../utils/orderDisplay";
+
+function OrderList({ order }) {
   return (
     <div
       className="
@@ -36,7 +38,7 @@ function OrderList() {
           shrink-0
         "
       >
-        MH
+        {getAvatarName(order.customerDetails?.name)}
       </div>
 
       {/* ORDER DETAILS */}
@@ -45,11 +47,11 @@ function OrderList() {
         {/* CUSTOMER INFO */}
         <div className="flex flex-col items-start gap-1 min-w-[160px]">
           <h1 className="text-white text-base font-semibold tracking-wide">
-            Mahedi Hasan
+            {order.customerDetails?.name || "Guest"}
           </h1>
 
           <p className="text-[#8f8f8f] text-sm">
-            8 items
+            {itemCount(order)} items
           </p>
         </div>
 
@@ -68,7 +70,7 @@ function OrderList() {
               font-semibold
             "
           >
-            Table 3
+            Table {order.table?.tableNo ?? "N/A"}
           </span>
         </div>
 
@@ -80,8 +82,8 @@ function OrderList() {
               flex
               items-center
               gap-2
-              bg-green-500/10
-              text-green-400
+              bg-[#343434]
+              text-white
               px-3
               py-1.5
               rounded-lg
@@ -89,13 +91,13 @@ function OrderList() {
               font-medium
             "
           >
-            <FaCheckDouble />
-            Ready
+            <FaCircle className={order.orderStatus === "Ready" ? "text-green-400" : order.orderStatus === "Completed" ? "text-blue-400" : "text-yellow-400"} />
+            {order.orderStatus}
           </span>
 
           <span className="flex items-center gap-2 text-[#8f8f8f] text-xs">
-            <FaCircle className="text-green-500 text-[8px]" />
-            Ready to serve
+            <FaCircle className="text-[8px]" />
+            {order.orderStatus === "Ready" ? "Ready to serve" : order.orderStatus === "Completed" ? "Order completed" : "Preparing your order"}
           </span>
 
         </div>

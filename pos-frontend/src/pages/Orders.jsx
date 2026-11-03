@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import BottomNav from "../components/shared/BottomNav";
 import OrderCard from "../components/shared/orders/OrderCard";
 import BackButton from "../components/shared/shared/BackButton";
 
+import { useNavigate } from "react-router-dom";
+import useOrders from "../hooks/useOrders";
+import { matchesOrder } from "../utils/orderDisplay";
+
 const Orders = () => {
+  const navigate = useNavigate();
+  const { data: orders = [], isPending, isError, refetch } = useOrders();
+  const [sort, setSort] = useState("Newest First");
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
 
+  const statuses = { progress: "In Progress", ready: "Ready", completed: "Completed" };
   const filters = [
-    { id: "all", label: "All Orders", count: 12 },
-    { id: "progress", label: "In Progress", count: 5 },
-    { id: "ready", label: "Ready", count: 3 },
-    { id: "completed", label: "Completed", count: 4 },
+    { id: "all", label: "All Orders", count: orders.length },
+    ...Object.entries(statuses).map(([id, label]) => ({ id, label, count: orders.filter((order) => order.orderStatus === label).length })),
   ];
+  const visibleOrders = orders.filter((order) => (status === "all" || order.orderStatus === statuses[status]) && matchesOrder(order, search))
+    .sort((a, b) => sort === "Order Number" ? a._id.localeCompare(b._id) : (new Date(a.createdAt) - new Date(b.createdAt)) * (sort === "Oldest First" ? 1 : -1));
 
   return (
     <section className="bg-[#161616] h-[calc(100vh-5rem)] overflow-hidden text-white">
@@ -46,11 +54,11 @@ const Orders = () => {
               </p>
 
               <p className="text-xl font-bold text-[#fb6100]">
-                8
+                {orders.filter((order) => order.orderStatus !== "Completed").length}
               </p>
             </div>
 
-            <button className="bg-[#fb6100] hover:bg-[#e55700] transition px-5 py-3 rounded-xl font-semibold shadow-lg">
+            <button onClick={() => navigate("/tables")} className="bg-[#fb6100] hover:bg-[#e55700] transition px-5 py-3 rounded-xl font-semibold shadow-lg">
               + New Order
             </button>
 
@@ -150,11 +158,11 @@ const Orders = () => {
             </h2>
 
             <p className="text-[#777] text-sm mt-1">
-              Showing {filters.find((item) => item.id === status)?.count} orders
+              Showing {visibleOrders.length} orders
             </p>
           </div>
 
-          <select
+          <select value={sort} onChange={(event) => setSort(event.target.value)}
             className="
               bg-[#252525]
               border border-[#343434]
@@ -188,18 +196,7 @@ const Orders = () => {
     min-h-0
   "
 >
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          {isPending ? <p>Loading orders...</p> : isError ? <p role="alert">Unable to load orders. <button onClick={() => refetch()}>Retry</button></p> : visibleOrders.length ? visibleOrders.map((order) => <OrderCard key={order._id} order={order} />) : <p>No orders available</p>}
         </div>
 
       </div>

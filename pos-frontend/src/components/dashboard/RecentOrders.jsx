@@ -1,80 +1,28 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { GrUpdate } from "react-icons/gr";
 import { FaSearch } from "react-icons/fa";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8000";
+import { useQueryClient } from "@tanstack/react-query";
+import { updateOrderStatus } from "../../https/index";
+import useOrders from "../../hooks/useOrders";
 
 const RecentOrders = () => {
-  const [orders, setOrders] = useState([]);
+  const queryClient = useQueryClient();
+  const { data: loadedOrders = [], isPending: loading, refetch, error: loadError } = useOrders();
+  const [draftStatuses, setDraftStatuses] = useState({});
+  const orders = loadedOrders.map((order) => ({ ...order, orderStatus: draftStatuses[order._id] ?? order.orderStatus }));
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
   const [error, setError] = useState("");
 
 
-  // ============================================
-  // GET ORDERS FROM BACKEND
-  // ============================================
-  const fetchOrders = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch(`${API_URL}/api/order`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result.message || "Unable to load orders"
-        );
-      }
-
-      const orderList = result.data || [];
-
-      // Newest orders first
-      const sortedOrders = [...orderList].sort(
-        (a, b) =>
-          new Date(b.createdAt || b.orderDate) -
-          new Date(a.createdAt || a.orderDate)
-      );
-
-      setOrders(sortedOrders);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  // ============================================
-  // LOAD ORDERS
-  // ============================================
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
+  const fetchOrders = () => refetch();
 
   // ============================================
   // CHANGE STATUS LOCALLY
   // ============================================
   const handleStatusChange = (orderId, newStatus) => {
-    setOrders((previousOrders) =>
-      previousOrders.map((order) =>
-        order._id === orderId
-          ? {
-              ...order,
-              orderStatus: newStatus,
-            }
-          : order
-      )
-    );
+    setDraftStatuses((previous) => ({ ...previous, [orderId]: newStatus }));
   };
 
 
@@ -92,44 +40,21 @@ const RecentOrders = () => {
 
       if (!order) return;
 
-      const response = await fetch(
-        `${API_URL}/api/order/${orderId}`,
-        {
-          method: "PUT",
-          credentials: "include",
+      await updateOrderStatus({ orderId, orderStatus: order.orderStatus });
+      await queryClient.invalidateQueries({ queryKey: ["orders"] });
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            orderStatus: order.orderStatus,
-          }),
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result.message || "Unable to update order"
-        );
-      }
-
-      setOrders((previousOrders) =>
-        previousOrders.map((currentOrder) =>
-          currentOrder._id === orderId
-            ? result.data
-            : currentOrder
-        )
-      );
     } catch (error) {
       console.error("Error updating order:", error);
       setError(error.message);
 
       // Reload correct database values if update failed
-      fetchOrders();
+      await fetchOrders();
     } finally {
+      setDraftStatuses((previous) => {
+        const next = { ...previous };
+        delete next[orderId];
+        return next;
+      });
       setUpdatingId(null);
     }
   };
@@ -147,6 +72,7 @@ const RecentOrders = () => {
       year: "numeric",
       hour: "numeric",
       minute: "2-digit",
+      timeZone: "America/New_York",
     });
   };
 
@@ -329,7 +255,7 @@ const RecentOrders = () => {
       {/* ============================================
           ERROR
       ============================================ */}
-      {error && (
+      {(error || loadError) && (
         <div
           className="
             bg-red-500/10
@@ -343,7 +269,7 @@ const RecentOrders = () => {
             text-sm
           "
         >
-          {error}
+          {error || loadError?.message}
         </div>
       )}
 
