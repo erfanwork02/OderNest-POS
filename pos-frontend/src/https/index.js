@@ -11,6 +11,9 @@ const api = axios.create({
 
 // API Endpoints
 
+export const deleteTable = (id) =>
+  api.delete(`/api/table/${id}`);
+
 export const login = (data) => api.post("/api/user/login", data);
 
 export const register = (data) => api.post("/api/user/register", data);

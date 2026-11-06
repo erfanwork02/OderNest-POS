@@ -5,6 +5,7 @@ import {
   MdTableBar,
   MdCategory,
   MdPayments,
+  MdDelete,
 } from "react-icons/md";
 
 import { BiSolidDish } from "react-icons/bi";
@@ -12,6 +13,7 @@ import { BiSolidDish } from "react-icons/bi";
 import Metrics from "../components/dashboard/Metrics";
 import RecentOrders from "../components/dashboard/RecentOrders";
 import Modal from "../components/dashboard/Modal";
+import DeleteTableModal from "../components/dashboard/DeleteTableModal";
 
 
 // ==============================
@@ -22,6 +24,11 @@ const buttons = [
     label: "Add Table",
     icon: <MdTableBar />,
     action: "table",
+  },
+  {
+    label: "Delete Table",
+    icon: <MdDelete />,
+    action: "deleteTable",
   },
   {
     label: "Add Category",
@@ -45,10 +52,18 @@ const tabs = ["Metrics", "Orders", "Payment"];
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("Metrics");
+  const [activeTab, setActiveTab] =
+    useState("Metrics");
 
-  const [isTableModalOpen, setIsTableModalOpen] =
-    useState(false);
+  const [
+    isTableModalOpen,
+    setIsTableModalOpen,
+  ] = useState(false);
+
+  const [
+    isDeleteTableModalOpen,
+    setIsDeleteTableModalOpen,
+  ] = useState(false);
 
 
   // ==============================
@@ -62,6 +77,12 @@ const Dashboard = () => {
       return;
     }
 
+    // OPEN DELETE TABLE MODAL
+    if (action === "deleteTable") {
+      setIsDeleteTableModalOpen(true);
+      return;
+    }
+
     // GO TO MENU FOR CATEGORY
     if (action === "category") {
       navigate("/menu");
@@ -71,6 +92,7 @@ const Dashboard = () => {
     // GO TO MENU FOR DISHES
     if (action === "dishes") {
       navigate("/menu");
+      return;
     }
   };
 
@@ -178,7 +200,9 @@ const Dashboard = () => {
 
               <button
                 key={action}
-                onClick={() => handleAction(action)}
+                onClick={() =>
+                  handleAction(action)
+                }
                 className="
                   bg-[#1f1f1f]
                   hover:bg-[#262626]
@@ -238,7 +262,9 @@ const Dashboard = () => {
 
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() =>
+                setActiveTab(tab)
+              }
               className={`
                 px-6
                 py-2.5
@@ -445,6 +471,18 @@ const Dashboard = () => {
         <Modal
           setIsTableModalOpen={
             setIsTableModalOpen
+          }
+        />
+      )}
+
+
+      {/* =====================================
+          DELETE TABLE MODAL
+      ====================================== */}
+      {isDeleteTableModalOpen && (
+        <DeleteTableModal
+          setIsDeleteTableModalOpen={
+            setIsDeleteTableModalOpen
           }
         />
       )}
