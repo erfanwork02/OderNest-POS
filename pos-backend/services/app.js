@@ -15,7 +15,16 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (
+        !origin ||
+        origin.startsWith("http://localhost:")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -28,7 +37,7 @@ app.set("json spaces", 2);
 
 // PORT
 
-const PORT = config.port || 5100;
+const PORT = config.port || 8000;
 
 
 // DATABASE
@@ -51,7 +60,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", require("../routes/userRoute"));
 app.use("/api/table", require("../routes/tableRoute"));
 app.use("/api/order", require("../routes/orderRoute"));
-app.use("/api/payment", require("../routes/PaymentRoute"));
+//app.use("/api/payment", require("../routes/PaymentRoute"));
 
 
 // GLOBAL ERROR HANDLER

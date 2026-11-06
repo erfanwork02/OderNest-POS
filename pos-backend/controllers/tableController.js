@@ -166,9 +166,44 @@ const updateTable = async (req, res, next) => {
   }
 };
 
+const deleteTable = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return next(createHttpError(400, "Invalid table id!"));
+    }
+
+    const table = await Table.findById(id);
+
+    if (!table) {
+      return next(createHttpError(404, "Table not found!"));
+    }
+
+    if (table.status === "Booked" || table.currentOrder) {
+      return next(
+        createHttpError(
+          400,
+          "Booked tables cannot be deleted!"
+        )
+      );
+    }
+
+    await Table.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Table deleted successfully!",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 module.exports = {
   addTable,
   getTables,
   updateTable,
+  deleteTable,
 };
