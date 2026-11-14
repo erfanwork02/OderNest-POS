@@ -1,33 +1,76 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import { RiDeleteBin2Fill } from "react-icons/ri";
-import { FaNotesMedical, FaMinus, FaPlus } from "react-icons/fa6";
-import { removeItem } from "../../redux/slices/cartSlice";
+import {
+  FaNotesMedical,
+  FaMinus,
+  FaPlus,
+} from "react-icons/fa6";
 
-
+import {
+  removeItem,
+  increaseQuantity,
+  decreaseQuantity,
+  updateItemNote,
+} from "../../redux/slices/cartSlice";
 
 const CartInfo = () => {
-const cartItems = useSelector((state) => state.cart);
+  const cartItems = useSelector(
+    (state) => state.cart
+  );
+
   const dispatch = useDispatch();
 
-  // Reference to the cart items container
-const scrollRef = useRef(null);
+  const scrollRef = useRef(null);
 
-// Automatically scroll to the latest cart item
-useEffect(() => {
-  if (scrollRef.current) {
-    scrollRef.current.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }
-}, [cartItems]);
+  const [openNoteId, setOpenNoteId] =
+    useState(null);
 
+  // Scroll to newest item
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [cartItems.length]);
 
-
-  // Remove an item from the cart
+  // Remove item
   const handleRemove = (id) => {
     dispatch(removeItem(id));
+
+    if (openNoteId === id) {
+      setOpenNoteId(null);
+    }
+  };
+
+  // Increase quantity
+  const handleIncrease = (id) => {
+    dispatch(increaseQuantity(id));
+  };
+
+  // Decrease quantity
+  const handleDecrease = (id) => {
+    dispatch(decreaseQuantity(id));
+  };
+
+  // Open or close note box
+  const handleNoteClick = (id) => {
+    setOpenNoteId((currentId) =>
+      currentId === id ? null : id
+    );
+  };
+
+  // Update note
+  const handleNoteChange = (id, note) => {
+    dispatch(
+      updateItemNote({
+        id,
+        note,
+      })
+    );
   };
 
   return (
@@ -36,21 +79,24 @@ useEffect(() => {
       {/* TITLE */}
       <div className="mb-4">
         <h2 className="text-white text-lg font-bold">
-          
         </h2>
 
         <p className="text-[#777] text-xs mt-1">
-        
         </p>
       </div>
 
-     {/* CART ITEMS */}
-<div
-  ref={scrollRef}
-  className="flex flex-col gap-3 max-h-[380px] overflow-y-auto scrollbar-hide"
->
-  
-
+      {/* CART ITEMS */}
+      <div
+        ref={scrollRef}
+        className="
+          flex
+          flex-col
+          gap-3
+          max-h-[380px]
+          overflow-y-auto
+          scrollbar-hide
+        "
+      >
         {cartItems.map((item) => (
           <div
             key={item.id}
@@ -81,7 +127,7 @@ useEffect(() => {
               </div>
 
               <p className="text-white font-bold text-sm">
-                ${item.price.toFixed(2)}
+                ${Number(item.price).toFixed(2)}
               </p>
 
             </div>
@@ -92,9 +138,12 @@ useEffect(() => {
               {/* ITEM ACTIONS */}
               <div className="flex items-center gap-2">
 
+                {/* DELETE */}
                 <button
                   title="Remove item"
-                  onClick={() => handleRemove(item.id)}
+                  onClick={() =>
+                    handleRemove(item.id)
+                  }
                   className="
                     w-8
                     h-8
@@ -112,20 +161,27 @@ useEffect(() => {
                   <RiDeleteBin2Fill size={15} />
                 </button>
 
+                {/* NOTE */}
                 <button
                   title="Add note"
-                  className="
+                  onClick={() =>
+                    handleNoteClick(item.id)
+                  }
+                  className={`
                     flex
                     items-center
                     gap-2
                     h-8
                     px-3
                     rounded-lg
-                    bg-[#343434]
-                    text-[#ababab]
-                    hover:text-white
                     transition
-                  "
+                    ${
+                      openNoteId === item.id ||
+                      item.note
+                        ? "bg-[#fb6100]/10 text-[#fb6100]"
+                        : "bg-[#343434] text-[#ababab] hover:text-white"
+                    }
+                  `}
                 >
                   <FaNotesMedical size={13} />
 
@@ -149,7 +205,11 @@ useEffect(() => {
                 "
               >
 
+                {/* MINUS */}
                 <button
+                  onClick={() =>
+                    handleDecrease(item.id)
+                  }
                   className="
                     w-8
                     h-8
@@ -166,11 +226,16 @@ useEffect(() => {
                   <FaMinus size={9} />
                 </button>
 
+                {/* QUANTITY NUMBER */}
                 <span className="w-8 text-center text-white text-sm font-semibold">
                   {item.quantity}
                 </span>
 
+                {/* PLUS */}
                 <button
+                  onClick={() =>
+                    handleIncrease(item.id)
+                  }
                   className="
                     w-8
                     h-8
@@ -191,6 +256,65 @@ useEffect(() => {
 
             </div>
 
+            {/* NOTE INPUT */}
+            {openNoteId === item.id && (
+              <div className="mt-3">
+
+                <textarea
+                  value={item.note || ""}
+                  onChange={(e) =>
+                    handleNoteChange(
+                      item.id,
+                      e.target.value
+                    )
+                  }
+                  placeholder="Add special instructions..."
+                  rows={2}
+                  className="
+                    w-full
+                    bg-[#1c1c1c]
+                    border
+                    border-[#343434]
+                    rounded-lg
+                    px-3
+                    py-2
+                    text-white
+                    text-sm
+                    placeholder-[#666]
+                    resize-none
+                    outline-none
+                    focus:border-[#fb6100]
+                    transition
+                  "
+                />
+
+              </div>
+            )}
+
+            {/* SAVED NOTE */}
+            {item.note &&
+              openNoteId !== item.id && (
+                <div
+                  className="
+                    mt-3
+                    bg-[#1c1c1c]
+                    border
+                    border-[#343434]
+                    rounded-lg
+                    px-3
+                    py-2
+                  "
+                >
+                  <p className="text-[#777] text-[10px] uppercase tracking-wide">
+                    Note
+                  </p>
+
+                  <p className="text-[#ababab] text-xs mt-1">
+                    {item.note}
+                  </p>
+                </div>
+              )}
+
           </div>
         ))}
 
@@ -201,4 +325,3 @@ useEffect(() => {
 };
 
 export default CartInfo;
-
