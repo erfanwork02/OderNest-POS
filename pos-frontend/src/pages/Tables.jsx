@@ -145,9 +145,7 @@ function Tables() {
                 Tables
               </h1>
 
-              <p className="text-[#777] text-sm mt-1">
-                Manage restaurant seating and table availability
-              </p>
+
             </div>
 
           </div>

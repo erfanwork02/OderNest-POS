@@ -11,45 +11,81 @@ import Orders from "./pages/Orders";
 import Tables from "./pages/Tables";
 import Menu from "./pages/Menu";
 import Dashboard from "./pages/Dashboard";
+import BottomNav from "./components/shared/BottomNav";
+
+import Header from "./components/shared/Header";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
 
+        {/* DEFAULT */}
         <Route
           path="/"
           element={<Navigate to="/auth" replace />}
         />
 
+        {/* LOGIN */}
         <Route
           path="/auth"
           element={<Auth />}
         />
 
+        {/* HOME */}
         <Route
           path="/home"
-          element={<Home />}
+          element={
+            <>
+              <Header />
+              <Home />
+            </>
+          }
         />
 
+        {/* ORDERS */}
         <Route
           path="/orders"
-          element={<Orders />}
+          element={
+            <>
+              <Header />
+              <Orders />
+            </>
+          }
         />
 
+        {/* TABLES */}
         <Route
           path="/tables"
-          element={<Tables />}
+          element={
+            <>
+              <Header />
+              <Tables />
+            </>
+          }
         />
 
+        {/* MENU */}
         <Route
           path="/menu"
-          element={<Menu />}
+          element={
+            <>
+              <Header />
+              <Menu />
+            </>
+          }
         />
 
+        {/* ADMIN DASHBOARD */}
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={
+            <>
+              <Header />
+              <BottomNav />
+              <Dashboard />
+            </>
+          }
         />
 
       </Routes>

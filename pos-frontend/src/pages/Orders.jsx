@@ -39,9 +39,7 @@ const Orders = () => {
                 Orders
               </h1>
 
-              <p className="text-[#8f8f8f] text-sm mt-1">
-                View and manage restaurant orders
-              </p>
+ 
             </div>
           </div>
 
