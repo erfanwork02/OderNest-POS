@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTotalPrice } from "../../redux/slices/cartSlice";
+import Invoice from "../invoice/invoice";
 
 import {
   FaMoneyBillWave,
@@ -22,6 +23,8 @@ const Bill = () => {
   const savedOrderRef = useRef(null);
   const submittingRef = useRef(false);
   const [paymentMethod, setPaymentMethod] = useState();
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [orderInfo, setOrderInfo] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isCardReady, setIsCardReady] = useState(false);
 
@@ -121,7 +124,9 @@ const Bill = () => {
       submittingRef.current = true;
       setIsProcessing(true);
       try {
-        const orderData = savedOrderRef.current ? null : createOrderData(customerData, cartData, total, taxRate);
+        const orderData = savedOrderRef.current
+  ? null
+  : createOrderData(customerData, cartData, total, taxRate, paymentMethod);
         await placeTableOrder({
           orderData,
           savedOrder: savedOrderRef.current,
@@ -129,6 +134,8 @@ const Bill = () => {
           updateTable,
           onCreated: (order) => { savedOrderRef.current = order; },
         });
+        setOrderInfo(savedOrderRef.current);
+        setShowInvoice(true);
         savedOrderRef.current = null;
         dispatch(removeAllItems());
         dispatch(removeCustomer());
@@ -382,10 +389,18 @@ const Bill = () => {
           {isProcessing
             ? "Processing..."
             : "Place Order"}
-        </button>
-      </div>
+     </button>
     </div>
-  );
+
+    {showInvoice && orderInfo && (
+      <Invoice
+        orderInfo={orderInfo}
+        setShowInvoice={setShowInvoice}
+      />
+    )}
+
+  </div>
+);
 };
 
 export default Bill;

@@ -10,7 +10,7 @@ export async function placeTableOrder({ orderData, savedOrder, addOrder, updateT
   return order;
 }
 
-export function createOrderData(customer, items, total, taxRate) {
+export function createOrderData(customer, items, total, taxRate, paymentMethod) {
   if (!customer.customerName?.trim() || !customer.customerPhone?.trim() || customer.guests < 1) {
     throw new Error("Please enter the customer name, phone and number of guests.");
   }
@@ -23,6 +23,7 @@ export function createOrderData(customer, items, total, taxRate) {
     orderStatus: "In Progress",
     bills: { total: subtotal, tax, totalWithTax: Math.round((subtotal + tax) * 100) / 100 },
     items,
-    table: customer.table.tableId,
+table: customer.table.tableId,
+paymentMethod,
   };
 }
