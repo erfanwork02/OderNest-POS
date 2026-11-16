@@ -14,12 +14,13 @@ const Orders = () => {
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
 
-  const statuses = { progress: "In Progress", ready: "Ready", completed: "Completed" };
+  const activeOrders = orders.filter((order) => order.orderStatus !== "Completed");
+  const statuses = { progress: "In Progress", ready: "Ready" };
   const filters = [
-    { id: "all", label: "All Orders", count: orders.length },
-    ...Object.entries(statuses).map(([id, label]) => ({ id, label, count: orders.filter((order) => order.orderStatus === label).length })),
+    { id: "all", label: "All Active", count: activeOrders.length },
+    ...Object.entries(statuses).map(([id, label]) => ({ id, label, count: activeOrders.filter((order) => order.orderStatus === label).length })),
   ];
-  const visibleOrders = orders.filter((order) => (status === "all" || order.orderStatus === statuses[status]) && matchesOrder(order, search))
+  const visibleOrders = activeOrders.filter((order) => (status === "all" || order.orderStatus === statuses[status]) && matchesOrder(order, search))
     .sort((a, b) => sort === "Order Number" ? a._id.localeCompare(b._id) : (new Date(a.createdAt) - new Date(b.createdAt)) * (sort === "Oldest First" ? 1 : -1));
 
   return (
@@ -52,7 +53,7 @@ const Orders = () => {
               </p>
 
               <p className="text-xl font-bold text-[#fb6100]">
-                {orders.filter((order) => order.orderStatus !== "Completed").length}
+                {activeOrders.length}
               </p>
             </div>
 
@@ -149,10 +150,9 @@ const Orders = () => {
 
           <div>
             <h2 className="text-lg font-semibold">
-              {status === "all" && "All Orders"}
+              {status === "all" && "Active Orders"}
               {status === "progress" && "Orders In Progress"}
               {status === "ready" && "Ready Orders"}
-              {status === "completed" && "Completed Orders"}
             </h2>
 
             <p className="text-[#777] text-sm mt-1">
@@ -194,7 +194,7 @@ const Orders = () => {
     min-h-0
   "
 >
-          {isPending ? <p>Loading orders...</p> : isError ? <p role="alert">Unable to load orders. <button onClick={() => refetch()}>Retry</button></p> : visibleOrders.length ? visibleOrders.map((order) => <OrderCard key={order._id} order={order} />) : <p>No orders available</p>}
+          {isPending ? <p>Loading orders...</p> : isError ? <p role="alert">Unable to load orders. <button onClick={() => refetch()}>Retry</button></p> : visibleOrders.length ? visibleOrders.map((order) => <OrderCard key={order._id} order={order} />) : <p>No active orders available</p>}
         </div>
 
       </div>
