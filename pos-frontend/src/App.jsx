@@ -1,8 +1,8 @@
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Routes,
   Route,
-  useLocation,
+  Navigate,
 } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -11,48 +11,86 @@ import Orders from "./pages/Orders";
 import Tables from "./pages/Tables";
 import Menu from "./pages/Menu";
 import Dashboard from "./pages/Dashboard";
-
-import Header from "./components/shared/Header";
 import BottomNav from "./components/shared/BottomNav";
 
-function AppContent() {
-  const location = useLocation();
+import Header from "./components/shared/Header";
 
-  const hideNavigation = location.pathname === "/auth";
-
+const App = () => {
   return (
-    <>
-      {!hideNavigation && <Header />}
-
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/tables" element={<Tables />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/dashboard" element={<Dashboard />} />
 
+        {/* DEFAULT */}
         <Route
-          path="*"
+          path="/"
+          element={<Navigate to="/auth" replace />}
+        />
+
+        {/* LOGIN */}
+        <Route
+          path="/auth"
+          element={<Auth />}
+        />
+
+        {/* HOME */}
+        <Route
+          path="/home"
           element={
-            <div className="min-h-screen bg-[#161616] text-white flex items-center justify-center">
-              Page Not Found
-            </div>
+            <>
+              <Header />
+              <Home />
+            </>
           }
         />
+
+        {/* ORDERS */}
+        <Route
+          path="/orders"
+          element={
+            <>
+              <Header />
+              <Orders />
+            </>
+          }
+        />
+
+        {/* TABLES */}
+        <Route
+          path="/tables"
+          element={
+            <>
+              <Header />
+              <Tables />
+            </>
+          }
+        />
+
+        {/* MENU */}
+        <Route
+          path="/menu"
+          element={
+            <>
+              <Header />
+              <Menu />
+            </>
+          }
+        />
+
+        {/* ADMIN DASHBOARD */}
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <Header />
+              <BottomNav />
+              <Dashboard />
+            </>
+          }
+        />
+
       </Routes>
-
-      {!hideNavigation && <BottomNav />}
-    </>
+    </BrowserRouter>
   );
-}
-
-function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
-}
+};
 
 export default App;
