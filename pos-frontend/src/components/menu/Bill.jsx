@@ -35,7 +35,7 @@ const Bill = () => {
   const total = useSelector(getTotalPrice);
 
   // Calculate tax and final bill
-  const taxRate = 5.25;
+  const taxRate = 6.625;
   const tax = (total * taxRate) / 100;
   const totalPriceWithTax = total + tax;
 
@@ -258,7 +258,7 @@ const Bill = () => {
 
         <div className="flex items-center justify-between">
           <p className="text-[#ababab] text-sm">
-            Tax (5.25%)
+            Tax (6.625%)
           </p>
 
           <p className="text-white text-sm font-semibold">

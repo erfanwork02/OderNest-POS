@@ -44,7 +44,7 @@ onSuccess: (res) => {
   enqueueSnackbar(data.message || "Login successful!", {
     variant: "success",
   });
-  navigate("/");
+  navigate("/home");
 },
 
 

@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { menus } from "../../constants";
-import {useDispatch } from "react-redux";
-import { addItems } from "../../redux/slices/cartSlice";
+import {
+  useDispatch,
+  useSelector,
+} from "react-redux";
 
+import { menus } from "../../constants";
+
+import {
+  addItems,
+  increaseQuantity,
+  decreaseQuantity,
+} from "../../redux/slices/cartSlice";
 
 import {
   FaMinus,
@@ -11,47 +19,67 @@ import {
 } from "react-icons/fa";
 
 const MenuContainer = () => {
-  const [selected, setSelected] = useState(menus[0]);
-  const [quantities, setQuantities] = useState({});
+  const [selected, setSelected] = useState(
+    menus[0]
+  );
+
   const dispatch = useDispatch();
 
-  const increment = (id) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: Math.min((prev[id] || 0) + 1, 9),
-    }));
+  // Get the real cart from Redux
+  const cartItems = useSelector(
+    (state) => state.cart
+  );
+
+  // Change quantity directly in Redux
+  const updateCartQuantity = (
+    item,
+    change
+  ) => {
+    const cartItemId = `menu-${item.id}`;
+
+    const existingItem = cartItems.find(
+      (cartItem) =>
+        cartItem.id === cartItemId
+    );
+
+    // ADD / INCREASE
+    if (change > 0) {
+      if (existingItem) {
+        if (existingItem.quantity >= 9) {
+          return;
+        }
+
+        dispatch(
+          increaseQuantity(cartItemId)
+        );
+      } else {
+        dispatch(
+          addItems({
+            id: cartItemId,
+            itemId: item.id,
+            name: item.name,
+            pricePerQuantity: Number(
+              item.price
+            ),
+            quantity: 1,
+            price: Number(item.price),
+            note: "",
+          })
+        );
+      }
+
+      return;
+    }
+
+    // DECREASE
+    if (change < 0 && existingItem) {
+      dispatch(
+        decreaseQuantity(cartItemId)
+      );
+    }
   };
 
-  const decrement = (id) => {
-  setQuantities((prev) => ({
-    ...prev,
-    [id]: Math.max((prev[id] || 0) - 1, 0),
-  }));
-};
-
-// Add selected menu item to the cart
-const handleAddToCart = (item) => {
-  const quantity = quantities[item.id] || 0;
-
-  if (quantity === 0) return;
-
-  const newItem = {
-    id: `${item.id}-${Date.now()}`,
-    name: item.name,
-    pricePerQuantity: Number(item.price),
-    quantity: quantity,
-    price: Number(item.price) * quantity,
-  };
-
-  dispatch(addItems(newItem));
-
-  setQuantities((prev) => ({
-    ...prev,
-    [item.id]: 0,
-  }));
-};
-
-return (
+  return (
     <div className="w-full">
 
       {/* CATEGORIES */}
@@ -63,7 +91,6 @@ return (
           </h2>
 
           <p className="text-[#777] text-xs mt-1">
-            
           </p>
         </div>
 
@@ -77,12 +104,15 @@ return (
           "
         >
           {menus.map((menu) => {
-            const isSelected = selected.id === menu.id;
+            const isSelected =
+              selected.id === menu.id;
 
             return (
               <button
                 key={menu.id}
-                onClick={() => setSelected(menu)}
+                onClick={() =>
+                  setSelected(menu)
+                }
                 className={`
                   relative
                   text-left
@@ -116,7 +146,9 @@ return (
                     </h3>
 
                     <p className="text-[#777] text-xs mt-1">
-                      {menu.items?.length ?? 0} items
+                      {menu.items?.length ??
+                        0}{" "}
+                      items
                     </p>
                   </div>
 
@@ -131,8 +163,10 @@ return (
         </div>
       </div>
 
+
       {/* DIVIDER */}
       <div className="border-t border-[#2f2f2f] mt-6" />
+
 
       {/* MENU ITEMS */}
       <div className="px-6 py-5">
@@ -143,7 +177,6 @@ return (
           </h2>
 
           <p className="text-[#777] text-xs mt-1">
-            
           </p>
         </div>
 
@@ -158,176 +191,217 @@ return (
             pb-8
           "
         >
-          {selected?.items?.map((item) => {
-            const quantity = quantities[item.id] || 0;
+          {selected?.items?.map(
+            (item) => {
+              const cartItemId =
+                `menu-${item.id}`;
 
-            return (
-              <div
-                key={item.id}
-                onClick={() => increment(item.id)}
-                className={`
-                  bg-[#252525]
-                  border
-                  rounded-xl
-                  p-4
-                  cursor-pointer
-                  transition-all
-                  duration-200
-                  hover:-translate-y-0.5
-                  ${
-                    quantity > 0
-                      ? "border-[#fb6100]/60 bg-[#292929]"
-                      : "border-[#343434] hover:border-[#fb6100]/40 hover:bg-[#292929]"
+              const cartItem =
+                cartItems.find(
+                  (cartItem) =>
+                    cartItem.id ===
+                    cartItemId
+                );
+
+              const quantity =
+                cartItem?.quantity || 0;
+
+              return (
+                <div
+                  key={item.id}
+                  onClick={() =>
+                    updateCartQuantity(
+                      item,
+                      1
+                    )
                   }
-                `}
-              >
-                {/* TOP */}
-                <div className="flex items-start justify-between gap-4">
+                  className={`
+                    bg-[#252525]
+                    border
+                    rounded-xl
+                    p-4
+                    cursor-pointer
+                    transition-all
+                    duration-200
+                    hover:-translate-y-0.5
+                    ${
+                      quantity > 0
+                        ? "border-[#fb6100]/60 bg-[#292929]"
+                        : "border-[#343434] hover:border-[#fb6100]/40 hover:bg-[#292929]"
+                    }
+                  `}
+                >
 
-                  <div>
-                    <h3 className="text-white font-semibold text-base">
-                      {item.name}
-                    </h3>
+                  {/* TOP */}
+                  <div className="flex items-start justify-between gap-4">
 
-                    <p className="text-[#777] text-xs mt-1">
-                      {selected?.name}
-                    </p>
-                  </div>
+                    <div>
+                      <h3 className="text-white font-semibold text-base">
+                        {item.name}
+                      </h3>
 
-                  {/* QUANTITY BADGE */}
-                  {quantity > 0 && (
-                    <div
-                      className="
-                        flex
-                        items-center
-                        gap-1.5
-                        bg-[#fb6100]/10
-                        text-[#fb6100]
-                        px-2.5
-                        py-1.5
-                        rounded-lg
-                        text-xs
-                        font-semibold
-                      "
-                    >
-                      <FaShoppingCart size={11} />
-
-                      {quantity}
+                      <p className="text-[#777] text-xs mt-1">
+                        {selected?.name}
+                      </p>
                     </div>
-                  )}
 
-                </div>
 
-                {/* BOTTOM */}
-                <div className="flex items-end justify-between mt-7">
-
-                  {/* PRICE */}
-                  <div>
-                    <p className="text-[#777] text-xs">
-                      Price
-                    </p>
-
-                    <p className="text-white text-xl font-bold mt-1">
-                      ${item.price.toFixed(2)}
-                    </p>
-                  </div>
-
-                  {/* NO ITEM ADDED */}
-                  {quantity === 0 ? (
-                    <div
-                      className="
-                        bg-[#fb6100]/10
-                        text-[#fb6100]
-                        px-3
-                        py-2
-                        rounded-lg
-                        text-xs
-                        font-semibold
-                      "
-                    >
-                      Tap to add
-                    </div>
-                  ) : (
-
-                    /* QUANTITY CONTROL */
-                    <div
-                      className="
-                        flex
-                        items-center
-                        gap-2
-                        bg-[#1c1c1c]
-                        border
-                        border-[#343434]
-                        rounded-lg
-                        p-1
-                      "
-                    >
-
-                      {/* MINUS */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          decrement(item.id);
-                        }}
+                    {/* QUANTITY BADGE */}
+                    {quantity > 0 && (
+                      <div
                         className="
-                          w-8
-                          h-8
                           flex
                           items-center
-                          justify-center
-                          rounded-md
-                          text-[#ababab]
-                          hover:text-white
-                          hover:bg-[#343434]
-                          transition
-                        "
-                      >
-                        <FaMinus size={10} />
-                      </button>
-
-                      {/* QUANTITY */}
-                      <span
-                        className="
-                          w-7
-                          text-center
-                          text-white
-                          text-sm
+                          gap-1.5
+                          bg-[#fb6100]/10
+                          text-[#fb6100]
+                          px-2.5
+                          py-1.5
+                          rounded-lg
+                          text-xs
                           font-semibold
                         "
                       >
-                        {quantity}
-                      </span>
+                        <FaShoppingCart
+                          size={11}
+                        />
 
-                      {/* PLUS */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          increment(item.id);
-                        }}
+                        {quantity}
+                      </div>
+                    )}
+
+                  </div>
+
+
+                  {/* BOTTOM */}
+                  <div className="flex items-end justify-between mt-7">
+
+                    {/* PRICE */}
+                    <div>
+                      <p className="text-[#777] text-xs">
+                        Price
+                      </p>
+
+                      <p className="text-white text-xl font-bold mt-1">
+                        $
+                        {Number(
+                          item.price
+                        ).toFixed(2)}
+                      </p>
+                    </div>
+
+
+                    {/* NO ITEM ADDED */}
+                    {quantity === 0 ? (
+                      <div
                         className="
-                          w-8
-                          h-8
-                          flex
-                          items-center
-                          justify-center
-                          rounded-md
-                          bg-[#fb6100]
-                          text-white
-                          hover:bg-[#e55700]
-                          transition
+                          bg-[#fb6100]/10
+                          text-[#fb6100]
+                          px-3
+                          py-2
+                          rounded-lg
+                          text-xs
+                          font-semibold
                         "
                       >
-                        <FaPlus size={10} />
-                      </button>
+                        Tap to add
+                      </div>
+                    ) : (
 
-                    </div>
-                  )}
+                      /* QUANTITY CONTROL */
+                      <div
+                        className="
+                          flex
+                          items-center
+                          gap-2
+                          bg-[#1c1c1c]
+                          border
+                          border-[#343434]
+                          rounded-lg
+                          p-1
+                        "
+                      >
+
+                        {/* MINUS */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+
+                            updateCartQuantity(
+                              item,
+                              -1
+                            );
+                          }}
+                          className="
+                            w-8
+                            h-8
+                            flex
+                            items-center
+                            justify-center
+                            rounded-md
+                            text-[#ababab]
+                            hover:text-white
+                            hover:bg-[#343434]
+                            transition
+                          "
+                        >
+                          <FaMinus
+                            size={10}
+                          />
+                        </button>
+
+
+                        {/* QUANTITY */}
+                        <span
+                          className="
+                            w-7
+                            text-center
+                            text-white
+                            text-sm
+                            font-semibold
+                          "
+                        >
+                          {quantity}
+                        </span>
+
+
+                        {/* PLUS */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+
+                            updateCartQuantity(
+                              item,
+                              1
+                            );
+                          }}
+                          className="
+                            w-8
+                            h-8
+                            flex
+                            items-center
+                            justify-center
+                            rounded-md
+                            bg-[#fb6100]
+                            text-white
+                            hover:bg-[#e55700]
+                            transition
+                          "
+                        >
+                          <FaPlus
+                            size={10}
+                          />
+                        </button>
+
+                      </div>
+                    )}
+
+                  </div>
 
                 </div>
-
-              </div>
-            );
-          })}
+              );
+            }
+          )}
         </div>
 
       </div>
@@ -337,4 +411,3 @@ return (
 };
 
 export default MenuContainer;
-
