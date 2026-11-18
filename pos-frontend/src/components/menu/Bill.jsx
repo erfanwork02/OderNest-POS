@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { getTotalPrice } from "../../redux/slices/cartSlice";
 import Invoice from "../invoice/invoice";
 
@@ -19,6 +20,8 @@ import { createOrderData, placeTableOrder } from "../../utils/orderFlow";
 const Bill = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const quickOrder = location.state?.quickOrder === true;
   const customerData = useSelector((state) => state.customer);
   const savedOrderRef = useRef(null);
   const submittingRef = useRef(false);
@@ -124,9 +127,18 @@ const Bill = () => {
       submittingRef.current = true;
       setIsProcessing(true);
       try {
-        const orderData = savedOrderRef.current
+        
+const orderData = savedOrderRef.current
   ? null
-  : createOrderData(customerData, cartData, total, taxRate, paymentMethod);
+  : createOrderData(
+      customerData,
+      cartData,
+      total,
+      taxRate,
+      paymentMethod,
+      quickOrder
+    );
+
         await placeTableOrder({
           orderData,
           savedOrder: savedOrderRef.current,
@@ -143,7 +155,13 @@ const Bill = () => {
           queryClient.invalidateQueries({ queryKey: ["orders"] }),
           queryClient.invalidateQueries({ queryKey: ["tables"] }),
         ]);
-        alert("Order placed and table booked successfully.");
+        
+alert(
+  quickOrder
+    ? "Quick order placed successfully."
+    : "Order placed and table booked successfully."
+);
+
       } catch (error) {
         const message = error.response?.data?.message || error.message;
         alert(savedOrderRef.current
