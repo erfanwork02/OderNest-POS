@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+
+import AddCategoryModal from "../components/dashboard/AddCategoryModal";
+import AddDishModal from "../components/dashboard/AddDishModal";
 
 import {
   MdTableBar,
@@ -53,8 +55,6 @@ const tabs = ["Metrics", "Orders", "Payment"];
 
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-
   const [activeTab, setActiveTab] =
     useState("Metrics");
 
@@ -66,6 +66,16 @@ const Dashboard = () => {
   const [
     isDeleteTableModalOpen,
     setIsDeleteTableModalOpen,
+  ] = useState(false);
+
+  const [
+    isAddCategoryModalOpen,
+    setIsAddCategoryModalOpen,
+  ] = useState(false);
+
+  const [
+    isAddDishModalOpen,
+    setIsAddDishModalOpen,
   ] = useState(false);
 
 
@@ -104,7 +114,6 @@ const Dashboard = () => {
   // ADMIN BUTTON ACTIONS
   // ==============================
   const handleAction = (action) => {
-
     if (action === "table") {
       setIsTableModalOpen(true);
       return;
@@ -116,12 +125,12 @@ const Dashboard = () => {
     }
 
     if (action === "category") {
-      navigate("/menu");
+      setIsAddCategoryModalOpen(true);
       return;
     }
 
     if (action === "dishes") {
-      navigate("/menu");
+      setIsAddDishModalOpen(true);
       return;
     }
   };
@@ -510,6 +519,26 @@ const Dashboard = () => {
         <DeleteTableModal
           setIsDeleteTableModalOpen={
             setIsDeleteTableModalOpen
+          }
+        />
+      )}
+
+
+      {/* ADD CATEGORY MODAL */}
+      {isAddCategoryModalOpen && (
+        <AddCategoryModal
+          setIsAddCategoryModalOpen={
+            setIsAddCategoryModalOpen
+          }
+        />
+      )}
+
+
+      {/* ADD DISH MODAL */}
+      {isAddDishModalOpen && (
+        <AddDishModal
+          setIsAddDishModalOpen={
+            setIsAddDishModalOpen
           }
         />
       )}
