@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,7 @@ import {
 
 import { updateTable } from "../../redux/slices/customerSlice";
 import { getRandomBg } from "../../utils";
+import api from "../../https";
 
 
 // ==============================
@@ -37,12 +38,16 @@ const TableCard = ({ table }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Local table data so the card updates immediately
+  const [tableData, setTableData] = useState(table);
+  const [updating, setUpdating] = useState(false);
+
   const isBooked =
-    table.status === "Booked";
+    tableData.status === "Booked";
 
   // GET CUSTOMER FROM CURRENT ORDER
   const customerName =
-    table.currentOrder?.customerDetails?.name || "";
+    tableData.currentOrder?.customerDetails?.name || "";
 
   const initials =
     getInitials(customerName);
@@ -52,12 +57,10 @@ const TableCard = ({ table }) => {
   // CUSTOMER TABLE COLOR
   // ==============================
   const tableColor = useMemo(() => {
-    // NO CUSTOMER = BLACK
     if (!customerName) {
       return "#000000";
     }
 
-    // CUSTOMER EXISTS = RANDOM COLOR
     return getRandomBg();
   }, [customerName]);
 
@@ -73,12 +76,47 @@ const TableCard = ({ table }) => {
 
     dispatch(
       updateTable({
-        tableNo: table.tableNo,
-        tableId: table._id,
+        tableNo: tableData.tableNo,
+        tableId: tableData._id,
       })
     );
 
     navigate("/menu");
+  };
+
+
+  // ==============================
+  // MAKE BOOKED TABLE AVAILABLE
+  // ==============================
+  const handleMakeAvailable = async () => {
+    try {
+      setUpdating(true);
+
+      await api.put(
+        `/api/table/${tableData._id}`,
+        {
+          status: "Available",
+          currentOrder: null,
+        }
+      );
+
+      // Update UI immediately
+      setTableData((previousTable) => ({
+        ...previousTable,
+        status: "Available",
+        currentOrder: null,
+      }));
+
+    } catch (error) {
+      console.error(
+        "Error updating table:",
+        error
+      );
+
+      alert("Could not update the table.");
+    } finally {
+      setUpdating(false);
+    }
   };
 
 
@@ -148,7 +186,7 @@ const TableCard = ({ table }) => {
               mt-1
             "
           >
-            Table {table.tableNo}
+            Table {tableData.tableNo}
           </h2>
 
         </div>
@@ -180,7 +218,7 @@ const TableCard = ({ table }) => {
             <FaCheckCircle size={11} />
           )}
 
-          {table.status}
+          {tableData.status}
 
         </span>
 
@@ -323,9 +361,9 @@ const TableCard = ({ table }) => {
 
 
       {/* ==============================
-          SEATS + BUTTON
+          SEATS + BUTTONS
       ============================== */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
 
         {/* SEATS */}
         <div
@@ -340,36 +378,81 @@ const TableCard = ({ table }) => {
           <FaUsers size={14} />
 
           <span className="text-sm">
-            Up to {table.seats} guests
+            Up to {tableData.seats} guests
           </span>
 
         </div>
 
 
-        {/* BUTTON */}
-        <button
-          onClick={handleSelectTable}
-          className={`
-            text-xs
-            font-semibold
-            px-3
-            py-2
-            rounded-lg
-            transition
+        {/* BUTTONS */}
+        <div className="flex items-center gap-2">
 
-            ${
-              isBooked
-                ? "bg-[#343434] text-[#ababab] hover:text-white hover:bg-[#3d3d3d]"
-                : "bg-[#fb6100] text-white hover:bg-[#e55700]"
-            }
-          `}
-        >
+          {/* BOOKED TABLE BUTTONS */}
+          {isBooked ? (
+            <>
+              <button
+                onClick={handleSelectTable}
+                className="
+                  text-xs
+                  font-semibold
+                  px-3
+                  py-2
+                  rounded-lg
+                  bg-[#343434]
+                  text-[#ababab]
+                  hover:text-white
+                  hover:bg-[#3d3d3d]
+                  transition
+                "
+              >
+                View Order
+              </button>
 
-          {isBooked
-            ? "View Order"
-            : "Select Table"}
+              <button
+                onClick={handleMakeAvailable}
+                disabled={updating}
+                className="
+                  text-xs
+                  font-semibold
+                  px-3
+                  py-2
+                  rounded-lg
+                  bg-green-600
+                  text-white
+                  hover:bg-green-700
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
+                  transition
+                "
+              >
+                {updating
+                  ? "Updating..."
+                  : "Make Available"}
+              </button>
+            </>
+          ) : (
 
-        </button>
+            /* AVAILABLE TABLE */
+            <button
+              onClick={handleSelectTable}
+              className="
+                text-xs
+                font-semibold
+                px-3
+                py-2
+                rounded-lg
+                bg-[#fb6100]
+                text-white
+                hover:bg-[#e55700]
+                transition
+              "
+            >
+              Select Table
+            </button>
+
+          )}
+
+        </div>
 
       </div>
 

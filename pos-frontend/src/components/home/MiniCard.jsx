@@ -2,6 +2,8 @@ import React from "react";
 
 const MiniCard = ({ title, icon, number, footerNum }) => {
   const isEarnings = title === "Total Earnings";
+  const showPercentage = title !== "In Progress";
+
   const isPositive = Number(footerNum) >= 0;
 
   return (
@@ -24,7 +26,7 @@ const MiniCard = ({ title, icon, number, footerNum }) => {
         group
       "
     >
-      {/* SUBTLE TOP ACCENT */}
+      {/* TOP ACCENT */}
       <div
         className={`
           absolute
@@ -42,14 +44,13 @@ const MiniCard = ({ title, icon, number, footerNum }) => {
 
       {/* TOP */}
       <div className="flex items-start justify-between">
-
         <div>
           <p className="text-[#8f8f8f] text-sm font-medium">
             {title}
           </p>
 
           <h1 className="text-[#f5f5f5] text-3xl font-bold mt-2 tracking-tight">
-            {title === "Total Earnings" ? `$${number}` : number}
+            {isEarnings ? `$${number}` : number}
           </h1>
         </div>
 
@@ -83,34 +84,38 @@ const MiniCard = ({ title, icon, number, footerNum }) => {
       {/* BOTTOM */}
       <div className="flex items-center justify-between">
 
-        <div className="flex items-center gap-2">
+        {/* PERCENTAGE ONLY FOR TOTAL EARNINGS */}
+        {showPercentage ? (
+          <div className="flex items-center gap-2">
+            <span
+              className={`
+                px-2.5
+                py-1
+                rounded-full
+                text-xs
+                font-semibold
+                ${
+                  isPositive
+                    ? "bg-green-500/10 text-green-400"
+                    : "bg-red-500/10 text-red-400"
+                }
+              `}
+            >
+              {isPositive ? "↑" : "↓"} {Math.abs(footerNum)}%
+            </span>
 
-          <span
-            className={`
-              px-2.5
-              py-1
-              rounded-full
-              text-xs
-              font-semibold
-              ${
-                isPositive
-                  ? "bg-green-500/10 text-green-400"
-                  : "bg-red-500/10 text-red-400"
-              }
-            `}
-          >
-            {isPositive ? "↑" : "↓"} {Math.abs(footerNum)}%
-          </span>
-
+            <span className="text-[#777] text-xs">
+              vs yesterday
+            </span>
+          </div>
+        ) : (
           <span className="text-[#777] text-xs">
-            vs yesterday
+            Active orders
           </span>
-
-        </div>
+        )}
 
         {/* STATUS */}
         <div className="flex items-center gap-2">
-
           <span
             className={`
               w-2
@@ -127,7 +132,6 @@ const MiniCard = ({ title, icon, number, footerNum }) => {
           <span className="text-[#666] text-xs">
             Today
           </span>
-
         </div>
 
       </div>
