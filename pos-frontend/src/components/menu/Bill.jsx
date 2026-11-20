@@ -245,7 +245,8 @@ const Bill = () => {
           "cash";
       },
     });
-
+  setOrderInfo(savedOrderRef.current);
+  setShowInvoice(true);
     clearOrder();
 
     await refreshData();
@@ -287,57 +288,10 @@ const Bill = () => {
       return;
     }
 
-    // CASH PAYMENT
-    if (paymentMethod === "cash") {
-      submittingRef.current = true;
-      setIsProcessing(true);
-      try {
-        
-const orderData = savedOrderRef.current
-  ? null
-  : createOrderData(
-      customerData,
-      cartData,
-      total,
-      taxRate,
-      paymentMethod,
-      quickOrder
-    );
+    
 
-        await placeTableOrder({
-          orderData,
-          savedOrder: savedOrderRef.current,
-          addOrder,
-          updateTable,
-          onCreated: (order) => { savedOrderRef.current = order; },
-        });
-        setOrderInfo(savedOrderRef.current);
-        setShowInvoice(true);
-        savedOrderRef.current = null;
-        dispatch(removeAllItems());
-        dispatch(removeCustomer());
-        await Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["orders"] }),
-          queryClient.invalidateQueries({ queryKey: ["tables"] }),
-        ]);
-        
-alert(
-  quickOrder
-    ? "Quick order placed successfully."
-    : "Order placed and table booked successfully."
-);
-
-      } catch (error) {
-        const message = error.response?.data?.message || error.message;
-        alert(savedOrderRef.current
-          ? `Order saved, but table booking failed: ${message}. Select Cash and retry to book the same order.`
-          : message);
-      } finally {
-        submittingRef.current = false;
-        setIsProcessing(false);
-      }
-    if (
-      savedOrderRef.current &&
+  if (
+    savedOrderRef.current &&
       savedPaymentMethodRef.current !==
         "card"
     ) {
@@ -770,7 +724,7 @@ alert(
 
       </div>
 
-    </div>
+   
 
     {showInvoice && orderInfo && (
       <Invoice
