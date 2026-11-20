@@ -207,11 +207,13 @@ const Bill = () => {
       savedOrderRef.current
         ? null
         : createOrderData(
-            customerData,
-            cartData,
-            total,
-            taxRate
-          );
+    customerData,
+    cartData,
+    total,
+    taxRate,
+    paymentMethod,
+    quickOrder
+  );
 
     const orderData =
       baseOrderData
