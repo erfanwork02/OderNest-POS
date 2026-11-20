@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   FaDollarSign,
@@ -14,43 +15,75 @@ import {
   MdTableRestaurant,
 } from "react-icons/md";
 
-import { menus, tables } from "../../constants";
-
+import { menus } from "../../constants";
+import { getAdminDashboardStats } from "../../https/index";
 
 const Metrics = () => {
-  const [timeRange, setTimeRange] = useState("Last 1 Month");
-
+  const [timeRange, setTimeRange] =
+    useState("Last 1 Month");
 
   // ============================================
-  // REAL FRONTEND DATA
+  // GET REAL DASHBOARD DATA
   // ============================================
 
-  // Total menu categories
-  const totalCategories = menus.length;
+  const {
+    data: dashboardResponse,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["admin-dashboard"],
+    queryFn: getAdminDashboardStats,
+    refetchOnWindowFocus: true,
+  });
 
-  // Total dishes from every category
-  const totalDishes = menus.reduce(
-    (total, category) => total + category.items.length,
-    0
-  );
+  const stats =
+    dashboardResponse?.data?.data || {};
 
-  // Total restaurant tables
-  const totalTables = tables.length;
+  // ============================================
+  // REAL DATABASE DATA
+  // ============================================
 
-  // Will be connected to Order API later
-  const activeOrders = 0;
+  const revenue =
+    Number(stats.revenue) || 0;
 
+  const totalOrders =
+    Number(stats.totalOrders) || 0;
+
+  const totalCustomers =
+    Number(stats.totalCustomers) || 0;
+
+  const averageOrderValue =
+    Number(stats.averageOrderValue) || 0;
+
+  const activeOrders =
+    Number(stats.activeOrders) || 0;
+
+  const totalTables =
+    Number(stats.totalTables) || 0;
+
+  // ============================================
+  // FRONTEND MENU DATA
+  // ============================================
+
+  const totalCategories =
+    menus.length;
+
+  const totalDishes =
+    menus.reduce(
+      (total, category) =>
+        total + category.items.length,
+      0
+    );
 
   // ============================================
   // OVERALL PERFORMANCE
-  // These will be connected to backend later
   // ============================================
 
   const performanceData = [
     {
       id: 1,
       title: "Revenue",
-      value: "$0.00",
+      value: `$${revenue.toFixed(2)}`,
       icon: <FaDollarSign />,
       accent: "bg-green-500/10",
       iconColor: "text-green-400",
@@ -58,7 +91,7 @@ const Metrics = () => {
     {
       id: 2,
       title: "Total Orders",
-      value: "0",
+      value: totalOrders,
       icon: <FaReceipt />,
       accent: "bg-[#fb6100]/10",
       iconColor: "text-[#fb6100]",
@@ -66,7 +99,7 @@ const Metrics = () => {
     {
       id: 3,
       title: "Total Customers",
-      value: "0",
+      value: totalCustomers,
       icon: <FaUsers />,
       accent: "bg-blue-500/10",
       iconColor: "text-blue-400",
@@ -74,13 +107,14 @@ const Metrics = () => {
     {
       id: 4,
       title: "Average Order Value",
-      value: "$0.00",
+      value: `$${averageOrderValue.toFixed(
+        2
+      )}`,
       icon: <FaChartLine />,
       accent: "bg-purple-500/10",
       iconColor: "text-purple-400",
     },
   ];
-
 
   // ============================================
   // ITEM DETAILS
@@ -121,7 +155,6 @@ const Metrics = () => {
     },
   ];
 
-
   // ============================================
   // METRIC CARD
   // ============================================
@@ -149,19 +182,16 @@ const Metrics = () => {
       >
         <div className="flex items-start justify-between">
 
-          {/* LEFT SIDE */}
           <div>
             <p className="text-[#8f8f8f] text-sm font-medium">
               {title}
             </p>
 
             <h2 className="text-white text-2xl font-bold mt-2">
-              {value}
+              {isLoading ? "..." : value}
             </h2>
           </div>
 
-
-          {/* ICON */}
           <div
             className={`
               ${accent}
@@ -183,14 +213,16 @@ const Metrics = () => {
     );
   };
 
-
   return (
     <div className="w-full">
 
-      {/* ============================================
-          OVERALL PERFORMANCE
-      ============================================ */}
+      {isError && (
+        <div className="mb-5 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl">
+          Unable to load dashboard data.
+        </div>
+      )}
 
+      {/* OVERALL PERFORMANCE */}
       <div>
 
         <div
@@ -205,7 +237,6 @@ const Metrics = () => {
           "
         >
 
-          {/* TITLE */}
           <div>
             <h2 className="text-white text-xl font-bold">
               Overall Performance
@@ -216,11 +247,11 @@ const Metrics = () => {
             </p>
           </div>
 
-
-          {/* TIME RANGE */}
           <select
             value={timeRange}
-            onChange={(e) => setTimeRange(e.target.value)}
+            onChange={(e) =>
+              setTimeRange(e.target.value)
+            }
             className="
               bg-[#1f1f1f]
               border
@@ -246,8 +277,6 @@ const Metrics = () => {
 
         </div>
 
-
-        {/* PERFORMANCE CARDS */}
         <div
           className="
             grid
@@ -257,25 +286,22 @@ const Metrics = () => {
             gap-4
           "
         >
-          {performanceData.map((metric) => (
-            <MetricCard
-              key={metric.id}
-              {...metric}
-            />
-          ))}
+          {performanceData.map(
+            (metric) => (
+              <MetricCard
+                key={metric.id}
+                {...metric}
+              />
+            )
+          )}
         </div>
 
       </div>
 
-
-      {/* ============================================
-          ITEM DETAILS
-      ============================================ */}
-
+      {/* ITEM DETAILS */}
       <div className="mt-10">
 
         <div className="mb-5">
-
           <h2 className="text-white text-xl font-bold">
             Item Details
           </h2>
@@ -283,11 +309,8 @@ const Metrics = () => {
           <p className="text-[#777] text-sm mt-1">
             Current menu, order and restaurant table information
           </p>
-
         </div>
 
-
-        {/* ITEM DETAIL CARDS */}
         <div
           className="
             grid
@@ -297,14 +320,12 @@ const Metrics = () => {
             gap-4
           "
         >
-
           {itemData.map((item) => (
             <MetricCard
               key={item.id}
               {...item}
             />
           ))}
-
         </div>
 
       </div>

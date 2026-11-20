@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
+import AddCategoryModal from "../components/dashboard/AddCategoryModal";
+import AddDishModal from "../components/dashboard/AddDishModal";
 
 import {
   MdTableBar,
@@ -14,6 +17,8 @@ import Metrics from "../components/dashboard/Metrics";
 import RecentOrders from "../components/dashboard/RecentOrders";
 import Modal from "../components/dashboard/Modal";
 import DeleteTableModal from "../components/dashboard/DeleteTableModal";
+
+import { getAdminDashboardStats } from "../https/index";
 
 
 // ==============================
@@ -50,8 +55,6 @@ const tabs = ["Metrics", "Orders", "Payment"];
 
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-
   const [activeTab, setActiveTab] =
     useState("Metrics");
 
@@ -65,33 +68,69 @@ const Dashboard = () => {
     setIsDeleteTableModalOpen,
   ] = useState(false);
 
+  const [
+    isAddCategoryModalOpen,
+    setIsAddCategoryModalOpen,
+  ] = useState(false);
+
+  const [
+    isAddDishModalOpen,
+    setIsAddDishModalOpen,
+  ] = useState(false);
+
+
+  // ==============================
+  // GET REAL DASHBOARD DATA
+  // ==============================
+  const {
+    data: dashboardResponse,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["admin-dashboard"],
+    queryFn: getAdminDashboardStats,
+    refetchOnWindowFocus: true,
+  });
+
+  const stats =
+    dashboardResponse?.data?.data || {};
+
+  const payments =
+    stats?.payments || {};
+
+  const cashPayments =
+    Number(payments.cash) || 0;
+
+  const cardPayments =
+    Number(payments.card) || 0;
+
+  const totalRevenue =
+    Number(payments.total) ||
+    Number(stats.revenue) ||
+    0;
+
 
   // ==============================
   // ADMIN BUTTON ACTIONS
   // ==============================
   const handleAction = (action) => {
-
-    // OPEN ADD TABLE MODAL
     if (action === "table") {
       setIsTableModalOpen(true);
       return;
     }
 
-    // OPEN DELETE TABLE MODAL
     if (action === "deleteTable") {
       setIsDeleteTableModalOpen(true);
       return;
     }
 
-    // GO TO MENU FOR CATEGORY
     if (action === "category") {
-      navigate("/menu");
+      setIsAddCategoryModalOpen(true);
       return;
     }
 
-    // GO TO MENU FOR DISHES
     if (action === "dishes") {
-      navigate("/menu");
+      setIsAddDishModalOpen(true);
       return;
     }
   };
@@ -109,9 +148,7 @@ const Dashboard = () => {
       "
     >
 
-      {/* =====================================
-          ADMIN DASHBOARD HEADER
-      ====================================== */}
+      {/* ADMIN DASHBOARD HEADER */}
       <div
         className="
           flex
@@ -124,9 +161,7 @@ const Dashboard = () => {
         "
       >
 
-        {/* PAGE TITLE */}
         <div>
-
           <h1 className="text-2xl font-bold text-white">
             Admin Dashboard
           </h1>
@@ -134,11 +169,9 @@ const Dashboard = () => {
           <p className="text-[#8f8f8f] text-sm mt-1">
             Manage your restaurant and monitor performance
           </p>
-
         </div>
 
 
-        {/* ADMIN STATUS */}
         <div
           className="
             flex
@@ -152,7 +185,6 @@ const Dashboard = () => {
             rounded-xl
           "
         >
-
           <span
             className="
               w-2
@@ -171,15 +203,12 @@ const Dashboard = () => {
           >
             Admin Panel
           </span>
-
         </div>
 
       </div>
 
 
-      {/* =====================================
-          ACTION BUTTONS + TABS
-      ====================================== */}
+      {/* ACTION BUTTONS + TABS */}
       <div
         className="
           flex
@@ -192,7 +221,6 @@ const Dashboard = () => {
         "
       >
 
-        {/* ADMIN ACTION BUTTONS */}
         <div className="flex items-center gap-3 flex-wrap">
 
           {buttons.map(
@@ -223,7 +251,6 @@ const Dashboard = () => {
                   cursor-pointer
                 "
               >
-
                 <span
                   className="
                     text-[#fb6100]
@@ -234,7 +261,6 @@ const Dashboard = () => {
                 </span>
 
                 {label}
-
               </button>
 
             )
@@ -274,7 +300,6 @@ const Dashboard = () => {
                 transition-all
                 duration-200
                 cursor-pointer
-
                 ${
                   activeTab === tab
                     ? "bg-[#fb6100] text-white"
@@ -292,9 +317,7 @@ const Dashboard = () => {
       </div>
 
 
-      {/* =====================================
-          TAB CONTENT
-      ====================================== */}
+      {/* TAB CONTENT */}
       <div className="w-full">
 
         {/* METRICS */}
@@ -346,7 +369,6 @@ const Dashboard = () => {
 
 
               <div>
-
                 <h2
                   className="
                     text-white
@@ -364,12 +386,30 @@ const Dashboard = () => {
                     mt-1
                   "
                 >
-                  Payment information will appear here.
+                  Live payment information from completed orders.
                 </p>
-
               </div>
 
             </div>
+
+
+            {/* ERROR */}
+            {isError && (
+              <div
+                className="
+                  mt-5
+                  bg-red-500/10
+                  border
+                  border-red-500/20
+                  text-red-400
+                  px-4
+                  py-3
+                  rounded-xl
+                "
+              >
+                Unable to load payment information.
+              </div>
+            )}
 
 
             {/* PAYMENT CARDS */}
@@ -393,15 +433,15 @@ const Dashboard = () => {
                   p-5
                 "
               >
-
                 <p className="text-[#8f8f8f] text-sm">
                   Cash Payments
                 </p>
 
                 <h3 className="text-white text-2xl font-bold mt-2">
-                  $0.00
+                  {isLoading
+                    ? "..."
+                    : `$${cashPayments.toFixed(2)}`}
                 </h3>
-
               </div>
 
 
@@ -415,15 +455,15 @@ const Dashboard = () => {
                   p-5
                 "
               >
-
                 <p className="text-[#8f8f8f] text-sm">
                   Card Payments
                 </p>
 
                 <h3 className="text-white text-2xl font-bold mt-2">
-                  $0.00
+                  {isLoading
+                    ? "..."
+                    : `$${cardPayments.toFixed(2)}`}
                 </h3>
-
               </div>
 
 
@@ -437,7 +477,6 @@ const Dashboard = () => {
                   p-5
                 "
               >
-
                 <p className="text-[#8f8f8f] text-sm">
                   Total Revenue
                 </p>
@@ -450,9 +489,10 @@ const Dashboard = () => {
                     mt-2
                   "
                 >
-                  $0.00
+                  {isLoading
+                    ? "..."
+                    : `$${totalRevenue.toFixed(2)}`}
                 </h3>
-
               </div>
 
             </div>
@@ -464,9 +504,7 @@ const Dashboard = () => {
       </div>
 
 
-      {/* =====================================
-          ADD TABLE MODAL
-      ====================================== */}
+      {/* ADD TABLE MODAL */}
       {isTableModalOpen && (
         <Modal
           setIsTableModalOpen={
@@ -476,13 +514,31 @@ const Dashboard = () => {
       )}
 
 
-      {/* =====================================
-          DELETE TABLE MODAL
-      ====================================== */}
+      {/* DELETE TABLE MODAL */}
       {isDeleteTableModalOpen && (
         <DeleteTableModal
           setIsDeleteTableModalOpen={
             setIsDeleteTableModalOpen
+          }
+        />
+      )}
+
+
+      {/* ADD CATEGORY MODAL */}
+      {isAddCategoryModalOpen && (
+        <AddCategoryModal
+          setIsAddCategoryModalOpen={
+            setIsAddCategoryModalOpen
+          }
+        />
+      )}
+
+
+      {/* ADD DISH MODAL */}
+      {isAddDishModalOpen && (
+        <AddDishModal
+          setIsAddDishModalOpen={
+            setIsAddDishModalOpen
           }
         />
       )}
