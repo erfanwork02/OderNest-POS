@@ -367,7 +367,7 @@ const todaysOrders = orders.filter((order) => {
 
               {/* NEW ORDER */}
               <button
-                onClick={() => navigate("/menu")}
+                onClick={() => navigate("/menu", { state: { quickOrder: true } })}
                 className="bg-[#fb6100] hover:bg-[#e55700] rounded-xl py-4 font-semibold transition shadow-md"
               >
                 + New Order

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { getTotalPrice } from "../../redux/slices/cartSlice";
+import Invoice from "../invoice/invoice";
 
 import {
   FaMoneyBillWave,
@@ -27,6 +29,9 @@ import {
 const Bill = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const quickOrder = location.state?.quickOrder === true;
+
 
   const customerData = useSelector(
     (state) => state.customer
@@ -41,16 +46,15 @@ const Bill = () => {
   const savedOrderRef = useRef(null);
   const savedPaymentMethodRef = useRef(null);
   const submittingRef = useRef(false);
+  const [paymentMethod, setPaymentMethod] = useState();
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [orderInfo, setOrderInfo] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isCardReady, setIsCardReady] = useState(false);
+
   const cardRef = useRef(null);
 
-  const [paymentMethod, setPaymentMethod] =
-    useState();
-
-  const [isProcessing, setIsProcessing] =
-    useState(false);
-
-  const [isCardReady, setIsCardReady] =
-    useState(false);
+ 
 
   // Backend URL
   const backendUrl =
@@ -241,7 +245,8 @@ const Bill = () => {
           "cash";
       },
     });
-
+  setOrderInfo(savedOrderRef.current);
+  setShowInvoice(true);
     clearOrder();
 
     await refreshData();
@@ -283,8 +288,10 @@ const Bill = () => {
       return;
     }
 
-    if (
-      savedOrderRef.current &&
+    
+
+  if (
+    savedOrderRef.current &&
       savedPaymentMethodRef.current !==
         "card"
     ) {
@@ -717,8 +724,17 @@ const Bill = () => {
 
       </div>
 
-    </div>
-  );
+   
+
+    {showInvoice && orderInfo && (
+      <Invoice
+        orderInfo={orderInfo}
+        setShowInvoice={setShowInvoice}
+      />
+    )}
+
+  </div>
+);
 };
 
 export default Bill;
